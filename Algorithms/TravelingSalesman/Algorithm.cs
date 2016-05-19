@@ -19,8 +19,6 @@ namespace Algorithms.TravelingSalesman
             PopulateGrid(row, col);
         }
 
-
-
         public void RunExample()
         {
             Console.WriteLine("Starting Traveling Salesman");
@@ -81,6 +79,10 @@ namespace Algorithms.TravelingSalesman
         }
         private void FindBestRouteForEach()
         {
+            foreach (City city in cities)
+            {
+                city.CalculateAllPaths(cities);
+            }
             foreach (City city in cities)
             {
                 city.CalculateBestPath();

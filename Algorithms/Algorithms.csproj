@@ -45,6 +45,7 @@
     <Compile Include="TravelingSalesman\Algorithm.cs" />
     <Compile Include="TravelingSalesman\City.cs" />
     <Compile Include="TravelingSalesman\CityDistance.cs" />
+    <Compile Include="TravelingSalesman\Enumerations.cs" />
     <Compile Include="TravelingSalesman\Utilities.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

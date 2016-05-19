@@ -5,16 +5,18 @@ namespace Algorithms.TravelingSalesman
 {
     public class City
     {
+        public string Name { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
         public bool AddedToGrid { get; set; }
-        public List<City> OtherCities { get; set; }
+        public Dictionary<City, CityDistance> cityDistances;
 
-        public City(int X, int Y)
+        public City(string Name, int X, int Y)
         {
+            this.Name = Name;
             this.X = X;
             this.Y = Y;
-            OtherCities = new List<City>();
+            cityDistances = new Dictionary<City, CityDistance>();
         }
 
         public override string ToString()
@@ -24,17 +26,203 @@ namespace Algorithms.TravelingSalesman
             return result;
         }
 
-        //Best Path with this being the first city
-        public void CalculateBestPath()
+        public int GetDistance(City destinationCity)
         {
-            foreach (City otherCity in OtherCities)
-            {
-                //City comparisonCity = otherCity.Key;
-                //CityDistance comparisonCityDistance = otherCity.Value;
+            int steps = 0;
 
-                //int test = 1;
+            foreach (KeyValuePair<City, CityDistance> cityDistance in cityDistances)
+            {
+                if (cityDistance.Key.Equals(destinationCity))
+                {
+                    steps = cityDistance.Value.TravelDirections.Count;
+                    break;
+                }
             }
 
+            return steps;
         }
+
+        #region Calculate Best Path
+
+        //Calculate the least cost path to visit all other cities fromt this city
+        public void CalculateBestPath()
+        {
+            Dictionary<string, int> distanceCounts = new Dictionary<string, int>();
+            Dictionary<City, bool> cityBools = GetCityList();
+            int maxIterations = this.cityDistances.Count;
+            int iterationCtr = 0;
+
+            while (iterationCtr < maxIterations)
+            {
+                City startCity = GetNextCityToStart(cityBools);
+
+                if (startCity == null)
+                    break;
+
+                distanceCounts.Add(startCity.Name, GetDistance(startCity));
+                foreach (KeyValuePair<City, CityDistance> cityDistance in cityDistances)
+                {
+                    City curCity = cityDistance.Key;
+                    if (curCity.Equals(startCity))
+                        continue;
+
+                    CityDistance curCityDistance = cityDistance.Value;
+                    //start here
+                    
+
+
+                }
+
+                SetCityIterationRun(startCity, cityBools);
+                iterationCtr++;
+            }
+        }
+
+        //TODO - seems bassackwards...I want to update a city as having been run first...must be a better way :(
+        private void SetCityIterationRun(City city, Dictionary<City, bool> cityBools)
+        {
+            KeyValuePair<City, bool> curCityBool = new KeyValuePair<City, bool>();
+
+            foreach (KeyValuePair<City, bool> cityBool in cityBools)
+            {
+                curCityBool = cityBool;
+                break;
+            }
+
+            cityBools.Remove(curCityBool.Key);            
+            cityBools.Add(curCityBool.Key, true);
+        }
+
+        private City GetNextCityToStart(Dictionary<City, bool> cityBools)
+        {
+            City cityToStart = null;
+
+            foreach (KeyValuePair<City, bool> cityBool in cityBools)
+            {
+                if (cityBool.Value == false)
+                {
+                    cityToStart = (City)cityBool.Key;
+                    break;
+                }
+            }
+
+            return cityToStart;
+        }
+
+        private Dictionary<City, bool> GetCityList()
+        {
+            Dictionary<City, bool> cities = new Dictionary<City, bool>();
+
+            foreach (KeyValuePair<City, CityDistance> cityDistance in cityDistances)
+            {
+                City curCity = (City)cityDistance.Key;
+                cities.Add(curCity, false);
+            }
+
+            return cities;
+        }
+
+        #endregion
+
+        #region Calculate All Paths
+
+        //x/y different, but same number - diagonal move
+        //x is 0, we are going up or down
+        //y is 0, we are going left or right
+        //x/y different and don't match, complicated move
+
+        //Calculate all paths from this city to the others and record approach
+        public void CalculateAllPaths(List<City> cities)
+        {
+            foreach (City otherCity in cities)
+            {
+                if (this.Name.Equals(otherCity.Name))
+                    continue;
+
+                CityDistance distance = DetermineDirection(otherCity);
+                this.cityDistances.Add(otherCity, distance);
+            }
+        }
+
+        private CityDistance DetermineDirection(City otherCity)
+        {
+            CityDistance distance = new CityDistance(this.X - otherCity.X, this.Y - otherCity.Y);
+
+            distance = GetSteps(distance, otherCity);
+
+            return distance;
+        }
+        private CityDistance GetSteps(CityDistance distance, City otherCity)
+        {
+            int xDiffCompare = 0;
+            int yDiffCompare = 0;
+
+            while (true)
+            {
+                if (yDiffCompare == distance.YDiff && xDiffCompare == distance.XDiff)
+                    break;
+                                
+                //W
+                if (distance.XDiff > 0 && (distance.YDiff == yDiffCompare))
+                {
+                    distance.TravelDirections.Add(Enumerations.Direction.W.ToString());
+                    xDiffCompare++;
+                }
+                //E
+                else if (distance.XDiff < 0 && (distance.YDiff == yDiffCompare))
+                {
+                    distance.TravelDirections.Add(Enumerations.Direction.E.ToString());
+                    xDiffCompare--;
+                }
+                //N
+                else if (distance.YDiff > 0 && (distance.XDiff == xDiffCompare))
+                {
+                    distance.TravelDirections.Add(Enumerations.Direction.N.ToString());
+                    yDiffCompare++;
+                }
+                //S
+                else if (distance.YDiff < 0 && (distance.XDiff == xDiffCompare))
+                {
+                    distance.TravelDirections.Add(Enumerations.Direction.S.ToString());
+                    yDiffCompare--;
+                }
+                //NE
+                else if (distance.XDiff > 0 && distance.YDiff > 0)
+                {
+                    distance.TravelDirections.Add(Enumerations.Direction.NE.ToString());
+                    xDiffCompare++;
+                    yDiffCompare++;
+                }
+                //NW
+                else if (distance.XDiff < 0 && distance.YDiff > 0)
+                {
+                    distance.TravelDirections.Add(Enumerations.Direction.NW.ToString());
+                    xDiffCompare--;
+                    yDiffCompare++;
+                }
+                //SE
+                else if (distance.XDiff > 0 && distance.YDiff < 0)
+                {
+                    distance.TravelDirections.Add(Enumerations.Direction.SE.ToString());
+                    xDiffCompare++;
+                    yDiffCompare--;
+                }
+                //SW
+                else if (distance.XDiff < 0 && distance.YDiff < 0)
+                {
+                    distance.TravelDirections.Add(Enumerations.Direction.SW.ToString());
+                    xDiffCompare--;
+                    yDiffCompare--;
+                }
+                else
+                {
+                    throw new System.Exception("Unknown direction");
+                }
+            }
+
+            return distance;
+        }
+
+        #endregion
     }
 }

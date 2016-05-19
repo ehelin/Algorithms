@@ -11,8 +11,8 @@ namespace Algorithms.TravelingSalesman
             {
                 for (int colCtr = 0; colCtr < grid.GetLength(1); colCtr++)
                 {
-                    if (grid[rowCtr, colCtr] == 1)
-                        Console.Write(grid[rowCtr, colCtr].ToString() + "-");
+                    if (grid[colCtr, rowCtr] == 1)
+                        Console.Write(grid[colCtr, rowCtr].ToString() + "-");
                     else
                         Console.Write("0-");
                 }
