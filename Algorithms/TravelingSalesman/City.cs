@@ -10,6 +10,7 @@ namespace Algorithms.TravelingSalesman
         public int Y { get; set; }
         public bool AddedToGrid { get; set; }
         public Dictionary<City, CityDistance> cityDistances;
+        public Dictionary<string, int> startingCityTotalDistances;
 
         public City(string Name, int X, int Y)
         {
@@ -17,6 +18,7 @@ namespace Algorithms.TravelingSalesman
             this.X = X;
             this.Y = Y;
             cityDistances = new Dictionary<City, CityDistance>();
+            startingCityTotalDistances = new Dictionary<string, int>();
         }
 
         public City Clone()
@@ -60,7 +62,6 @@ namespace Algorithms.TravelingSalesman
         //Calculate the least cost path to visit all other cities fromt this city
         public void CalculateBestPath()
         {
-            Dictionary<string, int> distanceCounts = new Dictionary<string, int>();
             Dictionary<City, bool> cityBools = GetCityList();
             int maxIterations = this.cityDistances.Count;
             int iterationCtr = 0;
@@ -80,7 +81,10 @@ namespace Algorithms.TravelingSalesman
                 {
                     bool cityAlreadyProcessed = false;
                     City curCity = cityDistance.Key;
-                    if (curStartCity.Equals(curCity))
+                    if (curCity.Name.Equals(curStartCity.Name))
+                        continue;
+
+                    if (curCity.Name.Equals(startCity.Name))
                         continue;
 
                     foreach (string city in curStartCityDistanceCities)
@@ -106,7 +110,7 @@ namespace Algorithms.TravelingSalesman
 
                 totalDistanceForThisStartCity += curStartCity.GetDistance(this);  //get the distance from last city back to original
 
-                distanceCounts.Add(startCity.Name, totalDistanceForThisStartCity);
+                startingCityTotalDistances.Add(startCity.Name, totalDistanceForThisStartCity);
 
                 SetCityIterationRun(startCity, cityBools);
                 iterationCtr++;
@@ -120,8 +124,11 @@ namespace Algorithms.TravelingSalesman
 
             foreach (KeyValuePair<City, bool> cityBool in cityBools)
             {
-                curCityBool = cityBool;
-                break;
+                if (city.Name.Equals(cityBool.Key.Name))
+                {
+                    curCityBool = cityBool;
+                    break;
+                }
             }
 
             cityBools.Remove(curCityBool.Key);            
