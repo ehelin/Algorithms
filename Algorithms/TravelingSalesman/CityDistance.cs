@@ -17,5 +17,12 @@ namespace Algorithms.TravelingSalesman
             this.YDiff = YDiff;
             TravelDirections = new List<string>();
         }
+
+        public override string ToString()
+        {
+            string result = "Traveling Steps: " + TravelDirections.Count.ToString();
+
+            return result;
+        }
     }
 }

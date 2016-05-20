@@ -19,9 +19,22 @@ namespace Algorithms.TravelingSalesman
             cityDistances = new Dictionary<City, CityDistance>();
         }
 
+        public City Clone()
+        {
+            City newCity = new City(this.Name, this.X, this.Y);
+            newCity.AddedToGrid = this.AddedToGrid;
+
+            foreach (var cityDistance in cityDistances)
+            {
+                newCity.cityDistances.Add(cityDistance.Key, cityDistance.Value);
+            }
+
+            return newCity;
+        }
+
         public override string ToString()
         {
-            string result = "X: " + X.ToString() + ", Y: " + Y.ToString();
+            string result = "Name: " + this.Name + ", X: " + this.X.ToString() + ", this.Y: " + Y.ToString();
 
             return result;
         }
@@ -54,24 +67,46 @@ namespace Algorithms.TravelingSalesman
 
             while (iterationCtr < maxIterations)
             {
-                City startCity = GetNextCityToStart(cityBools);
+                List<string> curStartCityDistanceCities = new List<string>();
+                City curStartCity = GetNextCityToStart(cityBools);
+                City startCity = curStartCity.Clone();
 
-                if (startCity == null)
+                int totalDistanceForThisStartCity = this.GetDistance(curStartCity);
+
+                if (curStartCity == null)
                     break;
 
-                distanceCounts.Add(startCity.Name, GetDistance(startCity));
                 foreach (KeyValuePair<City, CityDistance> cityDistance in cityDistances)
                 {
+                    bool cityAlreadyProcessed = false;
                     City curCity = cityDistance.Key;
-                    if (curCity.Equals(startCity))
+                    if (curStartCity.Equals(curCity))
                         continue;
 
-                    CityDistance curCityDistance = cityDistance.Value;
-                    //start here
+                    foreach (string city in curStartCityDistanceCities)
+                    {
+                        if (curCity.Name.Equals(city))
+                        {
+                            cityAlreadyProcessed = true;
+                            break;
+                        }
+                    }
+
+                    if (cityAlreadyProcessed)
+                        continue;
+
+                    //Start here...city 2 is calling city 3 (again) and it should be calling city 4
+                    int distanceFromCityToCity = curStartCity.GetDistance(curCity);
+
+                    totalDistanceForThisStartCity += distanceFromCityToCity;
                     
-
-
+                    curStartCityDistanceCities.Add(curCity.Name);
+                    curStartCity = curCity;
                 }
+
+                totalDistanceForThisStartCity += curStartCity.GetDistance(this);  //get the distance from last city back to original
+
+                distanceCounts.Add(startCity.Name, totalDistanceForThisStartCity);
 
                 SetCityIterationRun(startCity, cityBools);
                 iterationCtr++;
