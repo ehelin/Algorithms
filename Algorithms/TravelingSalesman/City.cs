@@ -75,7 +75,8 @@ namespace Algorithms.TravelingSalesman
                 City curStartCity = GetNextCityToStart(cityBools);
                 City startCity = curStartCity.Clone();
 
-                individualCityDistances.Add(curStartCity.Name, this.GetDistance(curStartCity));
+                individualCityDistances.Add(this.Name, this.GetDistance(curStartCity));
+                //individualCityDistances.Add(curStartCity.Name, this.GetDistance(curStartCity));
                 //int totalDistanceForThisStartCity = this.GetDistance(curStartCity);
 
                 if (curStartCity == null)
@@ -102,10 +103,11 @@ namespace Algorithms.TravelingSalesman
 
                     if (cityAlreadyProcessed)
                         continue;
-                    
+
                     //int distanceFromCityToCity = curStartCity.GetDistance(curCity);
 
-                    individualCityDistances.Add(curCity.Name, this.GetDistance(curCity));
+                    individualCityDistances.Add(curStartCity.Name, this.GetDistance(curCity));
+                    //individualCityDistances.Add(curCity.Name, this.GetDistance(curCity));
                     //totalDistanceForThisStartCity += distanceFromCityToCity;
 
                     curStartCityDistanceCities.Add(curCity.Name);
@@ -113,8 +115,9 @@ namespace Algorithms.TravelingSalesman
                 }
 
                 //totalDistanceForThisStartCity += curStartCity.GetDistance(this);  //get the distance from last city back to original
-                
-                individualCityDistances.Add(this.Name, curStartCity.GetDistance(this));
+
+                individualCityDistances.Add(curStartCity.Name, curStartCity.GetDistance(this));
+                //individualCityDistances.Add(this.Name, curStartCity.GetDistance(this));
                 //startingCityTotalDistances.Add(startCity.Name, totalDistanceForThisStartCity);
                 startingCityTotalDistances.Add(startCity.Name, individualCityDistances);
 

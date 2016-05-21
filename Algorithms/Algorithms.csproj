@@ -42,7 +42,9 @@
     <Compile Include="Genetic\Algorithm.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TravelingSalesman\Algorithmv2.cs" />
     <Compile Include="TravelingSalesman\Algorithm.cs" />
+    <Compile Include="TravelingSalesman\Cityv2.cs" />
     <Compile Include="TravelingSalesman\City.cs" />
     <Compile Include="TravelingSalesman\CityDistance.cs" />
     <Compile Include="TravelingSalesman\Enumerations.cs" />

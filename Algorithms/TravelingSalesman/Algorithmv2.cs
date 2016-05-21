@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Algorithms.TravelingSalesman
 {
-    public class Algorithmv2
+    public class Algorithm
     {
         private int[,] grid = null;
         private List<City> cities = null;
 
-        public Algorithmv2(int row, int col, List<City> cities)
+        public Algorithm(int row, int col, List<City> cities)
         {
             this.cities = cities;
 

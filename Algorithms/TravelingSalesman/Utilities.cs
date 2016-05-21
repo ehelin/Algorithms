@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Algorithms.TravelingSalesman
 {
@@ -19,6 +20,33 @@ namespace Algorithms.TravelingSalesman
 
                 Console.WriteLine("");
             }
+        }
+
+        public static List<Cityv2> GetCitiesv2()
+        {
+            List<Cityv2> city = new List<Cityv2>();
+
+            city.Add(new Cityv2("City1", 2, 2));
+            city.Add(new Cityv2("City2", 4, 4));
+            city.Add(new Cityv2("City3", 6, 6));
+            city.Add(new Cityv2("City4", 11, 15));
+            city.Add(new Cityv2("City5", 19, 10));
+            city.Add(new Cityv2("City6", 15, 4));
+
+            return city;
+        }
+        public static List<City> GetCities()
+        {
+            List<City> city = new List<City>();
+
+            city.Add(new City("City1", 2, 2));
+            city.Add(new City("City2", 4, 4));
+            city.Add(new City("City3", 6, 6));
+            city.Add(new City("City4", 11, 15));
+            city.Add(new City("City5", 19, 10));
+            city.Add(new City("City6", 15, 4));
+
+            return city;
         }
     }
 }
