@@ -26,10 +26,10 @@ namespace Algorithms
 
             city.Add(new City("City1", 2, 2));
             city.Add(new City("City2", 4, 4));
-            city.Add(new City("City3", 5, 9));
+            city.Add(new City("City3", 6, 6));
             city.Add(new City("City4", 11, 15));
-            //city.Add(new City("City5", 19, 10));
-            //city.Add(new City("City6", 15, 4));
+            city.Add(new City("City5", 19, 10));
+            city.Add(new City("City6", 15, 4));
 
             return city;
         }

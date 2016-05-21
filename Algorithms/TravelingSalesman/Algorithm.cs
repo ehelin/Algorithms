@@ -87,6 +87,8 @@ namespace Algorithms.TravelingSalesman
             {
                 city.CalculateBestPath();
             }
+
+            City tmpCity = cities[0];
         }
 
         #endregion

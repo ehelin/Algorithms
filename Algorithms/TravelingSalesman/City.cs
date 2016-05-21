@@ -10,7 +10,8 @@ namespace Algorithms.TravelingSalesman
         public int Y { get; set; }
         public bool AddedToGrid { get; set; }
         public Dictionary<City, CityDistance> cityDistances;
-        public Dictionary<string, int> startingCityTotalDistances;
+        public Dictionary<string, Dictionary<string, int>> startingCityTotalDistances;
+        public Dictionary<string, int> cityTotalDistances;
 
         public City(string Name, int X, int Y)
         {
@@ -18,7 +19,8 @@ namespace Algorithms.TravelingSalesman
             this.X = X;
             this.Y = Y;
             cityDistances = new Dictionary<City, CityDistance>();
-            startingCityTotalDistances = new Dictionary<string, int>();
+            startingCityTotalDistances = new Dictionary<string, Dictionary<string, int>>();
+            cityTotalDistances = new Dictionary<string, int>();
         }
 
         public City Clone()
@@ -68,11 +70,13 @@ namespace Algorithms.TravelingSalesman
 
             while (iterationCtr < maxIterations)
             {
+                Dictionary<string, int> individualCityDistances = new Dictionary<string, int>();
                 List<string> curStartCityDistanceCities = new List<string>();
                 City curStartCity = GetNextCityToStart(cityBools);
                 City startCity = curStartCity.Clone();
 
-                int totalDistanceForThisStartCity = this.GetDistance(curStartCity);
+                individualCityDistances.Add(curStartCity.Name, this.GetDistance(curStartCity));
+                //int totalDistanceForThisStartCity = this.GetDistance(curStartCity);
 
                 if (curStartCity == null)
                     break;
@@ -98,22 +102,41 @@ namespace Algorithms.TravelingSalesman
 
                     if (cityAlreadyProcessed)
                         continue;
-
-                    //Start here...city 2 is calling city 3 (again) and it should be calling city 4
-                    int distanceFromCityToCity = curStartCity.GetDistance(curCity);
-
-                    totalDistanceForThisStartCity += distanceFromCityToCity;
                     
+                    //int distanceFromCityToCity = curStartCity.GetDistance(curCity);
+
+                    individualCityDistances.Add(curCity.Name, this.GetDistance(curCity));
+                    //totalDistanceForThisStartCity += distanceFromCityToCity;
+
                     curStartCityDistanceCities.Add(curCity.Name);
                     curStartCity = curCity;
                 }
 
-                totalDistanceForThisStartCity += curStartCity.GetDistance(this);  //get the distance from last city back to original
-
-                startingCityTotalDistances.Add(startCity.Name, totalDistanceForThisStartCity);
+                //totalDistanceForThisStartCity += curStartCity.GetDistance(this);  //get the distance from last city back to original
+                
+                individualCityDistances.Add(this.Name, curStartCity.GetDistance(this));
+                //startingCityTotalDistances.Add(startCity.Name, totalDistanceForThisStartCity);
+                startingCityTotalDistances.Add(startCity.Name, individualCityDistances);
 
                 SetCityIterationRun(startCity, cityBools);
                 iterationCtr++;
+            }
+
+            TotalIndividualCityDistances();
+        }
+
+        private void TotalIndividualCityDistances()
+        {
+            foreach (var startingCityTotalDistances in this.startingCityTotalDistances)
+            {
+                int totalDistance = 0;
+
+                foreach (var city in startingCityTotalDistances.Value)
+                {
+                    totalDistance += city.Value; 
+                }
+
+                this.cityTotalDistances.Add(startingCityTotalDistances.Key, totalDistance);
             }
         }
 
