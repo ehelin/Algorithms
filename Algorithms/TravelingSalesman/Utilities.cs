@@ -26,12 +26,12 @@ namespace Algorithms.TravelingSalesman
         {
             List<Cityv2> city = new List<Cityv2>();
 
-            city.Add(new Cityv2("City1", 2, 2));
-            city.Add(new Cityv2("City2", 4, 4));
-            city.Add(new Cityv2("City3", 6, 6));
-            city.Add(new Cityv2("City4", 11, 15));
-            city.Add(new Cityv2("City5", 19, 10));
-            city.Add(new Cityv2("City6", 15, 4));
+            //city.Add(new Cityv2("City1", 2, 2));
+            //city.Add(new Cityv2("City2", 4, 4));
+            //city.Add(new Cityv2("City3", 6, 6));
+            //city.Add(new Cityv2("City4", 11, 15));
+            //city.Add(new Cityv2("City5", 19, 10));
+            //city.Add(new Cityv2("City6", 15, 4));
 
             return city;
         }
