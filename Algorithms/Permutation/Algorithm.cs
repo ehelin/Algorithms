@@ -58,99 +58,104 @@ namespace Algorithms.Permutation
             Console.WriteLine("Permutation Algorithm Complete!");
         }
 
-        private void Display(List<int> values)
+        private string Display(List<int> values)
         {
+            string line = string.Empty;
+
             foreach (int character in values)
-                Console.Write(character.ToString());
+                line += character.ToString();
+
+            Console.Write(line);
 
             Console.Write("\n");
+
+            return line;
         }
 
         private void Run(List<int> values)
         {
             int position = values.Count - 1;
             int maxValue = values[position];
+            int curIncrementPosition = 2;
+            int maxValueCtr = 0;
 
             int ctr = 0;
             while (true)
             {
-                Display(values);                                        //123456
+                int compareValue = values[position - curIncrementPosition];
+                if (compareValue == maxValue)
+                {
+                    maxValueCtr++;
 
-                if (ctr == 0 || ctr == 2 || ctr == 4)                   //123465 - flip last 2
+                    if (maxValueCtr == curIncrementPosition)
+                    {
+                        curIncrementPosition = curIncrementPosition + 1;
+                        List<int> values1 = new List<int>();
+                        int myCtr = curIncrementPosition;
+                        int incrementedValue = values[position - myCtr];
+                        incrementedValue++;
+
+                        while (myCtr >= 0)
+                        {
+                            values1.Add(values[position - myCtr]);
+                            myCtr--;
+                        }
+
+                        values1.Remove(incrementedValue);
+                        values1 = Sort(values1);
+
+                        int positionCtr = curIncrementPosition - 1;
+                        values[positionCtr] = incrementedValue;
+
+                        int sortCtr = 0;
+                        while (positionCtr >= 0)
+                        {
+                            values[position - positionCtr] = values1[sortCtr];
+                            positionCtr--;
+                            sortCtr++;
+                        }
+
+                        ctr = 1;
+                    }
+                }
+
+                string line = Display(values);                                        //123456     
+
+                if (ctr % 2 == 0)                   //123465 - flip last 2
                 {
                     int tmp = values[position];
                     values[position] = values[position - 1];
                     values[position - 1] = tmp;
                 }
-                else if (ctr == 1 || ctr == 3)                          //123546 - increase 3rd
+                else if (ctr % 2 != 0)                          //123546 - increase 3rd
                 {
-                    int val1 = values[position - 2];
-                    int val2 = values[position - 1];
-                    int val3 = values[position];
+                    List<int> values1 = new List<int>();
 
-                    List<int> shortSort = new List<int>();
-                    shortSort.Add(val1);
-                    shortSort.Add(val2);
-                    shortSort.Add(val3);
-                    shortSort = Sort(shortSort);
-
-                    int incrementedValue = 0;
-
-                    if (ctr == 1)
+                    int positionCtr = curIncrementPosition;
+                    while (positionCtr >= 0)
                     {
-                        incrementedValue = shortSort[ctr];
+                        values1.Add(values[position - positionCtr]);
+                        positionCtr--;
                     }
-                    else if (ctr == 3)
+                    values1 = Sort(values1);
+
+                    int incrementedValue = values[position - curIncrementPosition];
+                    incrementedValue++;
+                    
+                    values1.Remove(incrementedValue);
+                    values1 = Sort(values1);
+
+                    positionCtr = curIncrementPosition + 1;
+                    values[positionCtr] = incrementedValue;
+                    positionCtr = positionCtr - 2;
+
+                    int sortCtr = 0;
+                    while (positionCtr >= 0)
                     {
-                        int tmp = ctr - 1;
-                        incrementedValue = shortSort[tmp];
+                        values[position - positionCtr] = values1[sortCtr];
+                        positionCtr--;
+                        sortCtr++;
                     }
-
-                    shortSort.Clear();
-
-                    if (val1 != incrementedValue)
-                        shortSort.Add(val1);
-                    if (val2 != incrementedValue)
-                        shortSort.Add(val2);
-                    if (val3 != incrementedValue)
-                        shortSort.Add(val3);
-
-                    shortSort = Sort(shortSort);
-
-                    values[position - 2] = incrementedValue;
-                    values[position - 1] = shortSort[0];
-                    values[position] = shortSort[1];
-                }
-                else                                                    //124356 - increment 4th
-                {
-                    if (values[2] == maxValue)
-                        break;
-
-                    int val1 = values[position - 3];
-                    int val2 = values[position - 2];
-                    int val3 = values[position - 1];
-                    int val4 = values[position];
-
-                    int incrementedValue = val1 + 1;
-                    List<int> shortSort = new List<int>();
-
-                    if (val1 != incrementedValue)
-                        shortSort.Add(val1);
-                    if (val2 != incrementedValue)
-                        shortSort.Add(val2);
-                    if (val3 != incrementedValue)
-                        shortSort.Add(val3);
-                    if (val4 != incrementedValue)
-                        shortSort.Add(val4);
-
-                    shortSort = Sort(shortSort);
-
-                    values[position - 3] = incrementedValue;
-                    values[position - 2] = shortSort[0];
-                    values[position - 1] = shortSort[1];
-                    values[position] = shortSort[2];
-
-                    ctr = -1;
                 }
 
                 ctr++;
