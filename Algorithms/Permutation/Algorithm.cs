@@ -77,57 +77,59 @@ namespace Algorithms.Permutation
             int position = values.Count - 1;
             int maxValue = values[position];
             int curIncrementPosition = 2;
-            int maxValueCtr = 0;
+            int masterCtr = 0;
 
             int ctr = 0;
             while (true)
             {
-                int compareValue = values[position - curIncrementPosition];
-                if (compareValue == maxValue)
+                string line = Display(values);
+
+                if (masterCtr == 23)
                 {
-                    maxValueCtr++;
-
-                    if (maxValueCtr == curIncrementPosition)
-                    {
-                        curIncrementPosition = curIncrementPosition + 1;
-                        List<int> values1 = new List<int>();
-                        int myCtr = curIncrementPosition;
-                        int incrementedValue = values[position - myCtr];
-                        incrementedValue++;
-
-                        while (myCtr >= 0)
-                        {
-                            values1.Add(values[position - myCtr]);
-                            myCtr--;
-                        }
-
-                        values1.Remove(incrementedValue);
-                        values1 = Sort(values1);
-
-                        int positionCtr = curIncrementPosition - 1;
-                        values[positionCtr] = incrementedValue;
-
-                        int sortCtr = 0;
-                        while (positionCtr >= 0)
-                        {
-                            values[position - positionCtr] = values1[sortCtr];
-                            positionCtr--;
-                            sortCtr++;
-                        }
-
-                        ctr = 1;
-                    }
+                    break;
                 }
 
-                string line = Display(values);                                        //123456     
+                int compareValue = values[position - curIncrementPosition];
+                if (compareValue == maxValue && ctr >= 5)
+                {
+                    int incrementedValue = values[curIncrementPosition];
+                    int myCtr = curIncrementPosition;
+                    curIncrementPosition = curIncrementPosition + 1;
+                    List<int> values1 = new List<int>();
+                    incrementedValue++;
 
-                if (ctr % 2 == 0)                   //123465 - flip last 2
+                    while (myCtr < values.Count)
+                    {
+                        values1.Add(values[myCtr]);
+                        myCtr++;
+                    }
+
+                    values1.Remove(incrementedValue);
+                    values1 = Sort(values1);
+
+                    int positionCtr = values.Count - (curIncrementPosition + 1);
+                    values[positionCtr] = incrementedValue;
+                    positionCtr++;
+
+                    int sortCtr = 0;
+                    while (positionCtr < values.Count)
+                    {
+                        values[positionCtr] = values1[sortCtr];
+                        positionCtr++;
+                        sortCtr++;
+                    }
+
+                    ctr = -1;
+                    curIncrementPosition = 2;
+                }                                      //123456     
+
+                if (ctr % 2 == 0 && ctr >= 0)                   //123465 - flip last 2
                 {
                     int tmp = values[position];
                     values[position] = values[position - 1];
                     values[position - 1] = tmp;
                 }
-                else if (ctr % 2 != 0)                          //123546 - increase 3rd
+                else if (ctr % 2 != 0 && ctr >= 0)                          //123546 - increase 3rd
                 {
                     List<int> values1 = new List<int>();
 
@@ -140,26 +142,45 @@ namespace Algorithms.Permutation
                     values1 = Sort(values1);
 
                     int incrementedValue = values[position - curIncrementPosition];
-                    incrementedValue++;
+                    incrementedValue = GetNextBiggerNumber(values1, incrementedValue);
                     
                     values1.Remove(incrementedValue);
                     values1 = Sort(values1);
 
-                    positionCtr = curIncrementPosition + 1;
+                    positionCtr = values.Count - (curIncrementPosition + 1);
+
+                    //positionCtr = curIncrementPosition + 1;
                     values[positionCtr] = incrementedValue;
-                    positionCtr = positionCtr - 2;
+                    positionCtr++;
 
                     int sortCtr = 0;
-                    while (positionCtr >= 0)
+                    while (positionCtr < values.Count)
                     {
-                        values[position - positionCtr] = values1[sortCtr];
-                        positionCtr--;
+                        values[positionCtr] = values1[sortCtr];
+                        positionCtr++;
                         sortCtr++;
                     }
                 }
 
                 ctr++;
+                masterCtr++;
             }
+        }
+
+        private int GetNextBiggerNumber(List<int> values, int curValue)
+        {
+            int nxtValue = 0;
+
+            foreach (int value in values)
+            {
+                if (value > curValue && value > nxtValue)
+                {
+                    nxtValue = value;
+                    break;
+                }
+            }
+
+            return nxtValue;
         }
     }
 }

@@ -21,6 +21,10 @@ namespace Algorithms
             string characters = "143652";
             Permutation.Algorithm permutation = new Permutation.Algorithm(characters);
             permutation.RunExample();
+            
+            characters = "1436527";
+            permutation = new Permutation.Algorithm(characters);
+            permutation.RunExample();
         }
 
         private void RunTravelingSalesman()
