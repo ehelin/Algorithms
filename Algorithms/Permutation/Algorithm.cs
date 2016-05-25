@@ -14,152 +14,75 @@ namespace Algorithms.Permutation
         {
             this.input = input;
         }
-
-        private List<int> Sort(List<int> values)
-        {
-            for (int outer = 0; outer < values.Count - 1; outer++)
-            {
-                for (int inner = 0; inner < values.Count - 1; inner++)
-                {
-                    if (inner + 1 > values.Count)
-                        break;
-
-                    if (values[inner] > values[inner + 1])
-                    {
-                        int val = values[inner];
-                        values[inner] = values[inner + 1];
-                        values[inner + 1] = val;
-                    }
-                }
-            }
-
-            return values;
-        }
-
-        private List<int> Setup()
-        {
-            List<int> values = new List<int>();
-            foreach (char character in input.ToCharArray())
-            {
-                string curChar = character.ToString();
-                values.Add(Convert.ToInt32(curChar));
-            }
-
-            return values;
-        }
+        
         public void RunExample()
         {
             Console.WriteLine("Starting Permutation Algorithm");
+            Console.WriteLine("Seed string - " + this.input);
 
-            List<int>values = Setup();
-            values = Sort(values);
-            Run(values);
+            AlgorithmList values = new AlgorithmList(this.input);
+            values.Sort();
+
+            Console.Write("Seed string sorted - ");
+            values.Display();
+
+            int curIncrementPosition = values.values.Count - 3;                           //starting number
+            int position = values.values.Count - 1;
+            int maxValue = values.values[values.values.Count -1];                                       //starting number
+            Run(values, curIncrementPosition, position, maxValue);
 
             Console.WriteLine("Permutation Algorithm Complete!");
+            Console.WriteLine("");
         }
-
-        private string Display(List<int> values)
+        
+        private void Run(AlgorithmList values, int curIncrementPosition, int position, int maxValue)
         {
-            string line = string.Empty;
-
-            foreach (int character in values)
-                line += character.ToString();
-
-            Console.Write(line);
-
-            Console.Write("\n");
-
-            return line;
-        }
-
-        private void Run(List<int> values)
-        {
-            int position = values.Count - 1;
-            int maxValue = values[position];
-            int curIncrementPosition = 2;
+            //int curIncrementPosition = 3;
+            //int maxValue = 6;// values.values[values.values.Count - 1];
             int masterCtr = 0;
+            int subTractionValue = 4;
 
             int ctr = 0;
             while (true)
             {
-                string line = Display(values);
+                values.Display();
 
-                if (masterCtr == 23)
+                if (masterCtr == 52 && values.values.Count == 7)
                 {
                     break;
                 }
 
-                int compareValue = values[position - curIncrementPosition];
-                if (compareValue == maxValue && ctr >= 5)
+                if ((masterCtr == 23 && values.values.Count == 7) || masterCtr == 23)
                 {
-                    int incrementedValue = values[curIncrementPosition];
-                    int myCtr = curIncrementPosition;
-                    curIncrementPosition = curIncrementPosition + 1;
-                    List<int> values1 = new List<int>();
-                    incrementedValue++;
-
-                    while (myCtr < values.Count)
+                    if (masterCtr == 23 && values.values.Count == 6)
                     {
-                        values1.Add(values[myCtr]);
-                        myCtr++;
+                        break;
                     }
 
-                    values1.Remove(incrementedValue);
-                    values1 = Sort(values1);
-
-                    int positionCtr = values.Count - (curIncrementPosition + 1);
-                    values[positionCtr] = incrementedValue;
-                    positionCtr++;
-
-                    int sortCtr = 0;
-                    while (positionCtr < values.Count)
+                    if (masterCtr == 23 && values.values.Count == 7)
                     {
-                        values[positionCtr] = values1[sortCtr];
-                        positionCtr++;
-                        sortCtr++;
+                        //maxValue++;// = values.values[values.values.Count - 1];
+                        curIncrementPosition--;
+                        subTractionValue++;
                     }
-
-                    ctr = -1;
-                    curIncrementPosition = 2;
-                }                                      //123456     
-
-                if (ctr % 2 == 0 && ctr >= 0)                   //123465 - flip last 2
-                {
-                    int tmp = values[position];
-                    values[position] = values[position - 1];
-                    values[position - 1] = tmp;
                 }
-                else if (ctr % 2 != 0 && ctr >= 0)                          //123546 - increase 3rd
+
+                int thisIndex = curIncrementPosition;
+                int compareValue = values.values[thisIndex];
+                if (compareValue == maxValue && ctr >= 5)                                   //increase 4th
                 {
-                    List<int> values1 = new List<int>();
+                    int tmpIncrementPosition = values.values.Count - subTractionValue;
+                    values = HandleIncrement(values, tmpIncrementPosition);
+                    ctr = -1;
+                }                                      
 
-                    int positionCtr = curIncrementPosition;
-                    while (positionCtr >= 0)
-                    {
-                        values1.Add(values[position - positionCtr]);
-                        positionCtr--;
-                    }
-                    values1 = Sort(values1);
-
-                    int incrementedValue = values[position - curIncrementPosition];
-                    incrementedValue = GetNextBiggerNumber(values1, incrementedValue);
-                    
-                    values1.Remove(incrementedValue);
-                    values1 = Sort(values1);
-
-                    positionCtr = values.Count - (curIncrementPosition + 1);
-
-                    //positionCtr = curIncrementPosition + 1;
-                    values[positionCtr] = incrementedValue;
-                    positionCtr++;
-
-                    int sortCtr = 0;
-                    while (positionCtr < values.Count)
-                    {
-                        values[positionCtr] = values1[sortCtr];
-                        positionCtr++;
-                        sortCtr++;
-                    }
+                if (ctr % 2 == 0 && ctr >= 0)                                               //flip last 2
+                {
+                    values = HandleSimpleSwap(values, position);
+                }
+                else if (ctr % 2 != 0 && ctr >= 0)                                          //increase 3rd
+                {
+                    values = HandleSubIncrement(values, curIncrementPosition, position);
                 }
 
                 ctr++;
@@ -167,11 +90,84 @@ namespace Algorithms.Permutation
             }
         }
 
-        private int GetNextBiggerNumber(List<int> values, int curValue)
+        private AlgorithmList HandleIncrement(AlgorithmList values, int curIncrementPosition)
+        {
+            int incrementedValue = values.values[curIncrementPosition];
+            int myCtr = curIncrementPosition;
+            //curIncrementPosition = curIncrementPosition + 1;
+            AlgorithmList values1 = new AlgorithmList();
+            incrementedValue++;
+
+            while (myCtr < values.values.Count)
+            {
+                values1.values.Add(values.values[myCtr]);
+                myCtr++;
+            }
+
+            values1.values.Remove(incrementedValue);
+            values1.Sort();
+
+            int positionCtr = curIncrementPosition;
+            values.values[positionCtr] = incrementedValue;
+            positionCtr++;
+
+            int sortCtr = 0;
+            while (positionCtr < values.values.Count)
+            {
+                values.values[positionCtr] = values1.values[sortCtr];
+                positionCtr++;
+                sortCtr++;
+            }
+
+            return values;
+        }
+        private AlgorithmList HandleSubIncrement(AlgorithmList values, int curIncrementPosition, int position)
+        {
+            AlgorithmList values1 = new AlgorithmList();
+
+            int positionCtr = curIncrementPosition;
+            while (positionCtr < values.values.Count)
+            {
+                values1.values.Add(values.values[positionCtr]);
+                positionCtr++;
+            }
+            values1.Sort();
+
+            int incrementedValue = values.values[curIncrementPosition];
+            incrementedValue = GetNextBiggerNumber(values1, incrementedValue);
+
+            values1.values.Remove(incrementedValue);
+            values1.Sort();
+
+            //positionCtr = values.values.Count - curIncrementPosition;
+
+            //positionCtr = curIncrementPosition + 1;
+            values.values[curIncrementPosition] = incrementedValue;
+            positionCtr = curIncrementPosition + 1;
+
+            int sortCtr = 0;
+            while (positionCtr < values.values.Count)
+            {
+                values.values[positionCtr] = values1.values[sortCtr];
+                positionCtr++;
+                sortCtr++;
+            }
+
+            return values;
+        }
+        private AlgorithmList HandleSimpleSwap(AlgorithmList values, int position)
+        {
+            int tmp = values.values[position];
+            values.values[position] = values.values[position - 1];
+            values.values[position - 1] = tmp;
+
+            return values;
+        }
+        private int GetNextBiggerNumber(AlgorithmList values, int curValue)
         {
             int nxtValue = 0;
 
-            foreach (int value in values)
+            foreach (int value in values.values)
             {
                 if (value > curValue && value > nxtValue)
                 {
