@@ -9,21 +9,23 @@ namespace Algorithms
     {
         public void Run()
         {
-            RunPermutationAlgorithm();
+            //RunPermutationAlgorithm("1,4,3,2");
+            RunPermutationAlgorithm("1,4,3,5,2");
+            //RunPermutationAlgorithm("1,4,3,6,5,2");
+            //RunPermutationAlgorithm("1,4,3,6,5,2,7");
+            //RunPermutationAlgorithm("1,4,3,6,8,5,2,7");
+            //RunPermutationAlgorithm("1,4,9,3,6,8,5,2,7");
+            //RunPermutationAlgorithm("1,4,9,3,6,10,8,5,2,7");
+            //RunPermutationAlgorithm("1,4,11,9,3,6,10,8,5,2,7");
             //RunTravelingSalesman();
             //RunGeneticAlgorithm();
 
             Console.Read();
         }
 
-        private void RunPermutationAlgorithm()
+        private void RunPermutationAlgorithm(string characters)
         {
-            string characters = "143652";
             Permutation.Algorithm permutation = new Permutation.Algorithm(characters);
-            permutation.RunExample();
-            
-            characters = "1436527";
-            permutation = new Permutation.Algorithm(characters);
             permutation.RunExample();
         }
 

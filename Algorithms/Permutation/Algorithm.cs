@@ -8,6 +8,7 @@ namespace Algorithms.Permutation
     /// </summary>
     public class Algorithm
     {
+        //string of characters to calculate permutations on
         private string input;
 
         public Algorithm(string input)
@@ -17,78 +18,71 @@ namespace Algorithms.Permutation
         
         public void RunExample()
         {
-            Console.WriteLine("Starting Permutation Algorithm");
-            Console.WriteLine("Seed string - " + this.input);
+            AlgorithmList values = PreRunSteps();
+                                               
+            Run(values);
 
-            AlgorithmList values = new AlgorithmList(this.input);
-            values.Sort();
-
-            Console.Write("Seed string sorted - ");
-            values.Display();
-
-            int curIncrementPosition = values.values.Count - 3;                           //starting number
-            int position = values.values.Count - 1;
-            int maxValue = values.values[values.values.Count -1];                                       //starting number
-            Run(values, curIncrementPosition, position, maxValue);
-
-            Console.WriteLine("Permutation Algorithm Complete!");
-            Console.WriteLine("");
+            PostRunSteps();
         }
-        
-        private void Run(AlgorithmList values, int curIncrementPosition, int position, int maxValue)
+
+        #region Algorithm Methods
+
+        private void Run(AlgorithmList values)
         {
-            //int curIncrementPosition = 3;
-            //int maxValue = 6;// values.values[values.values.Count - 1];
             int masterCtr = 0;
-            int subTractionValue = 4;
-
             int ctr = 0;
-            while (true)
-            {
-                values.Display();
+            bool done = false;
 
-                if (masterCtr == 52 && values.values.Count == 7)
+            while (!done)
+            {
+                //Try working in the ready to exit test and see if that will work in place of masterCtr tests
+                if (values.ReadyToExit())
                 {
+                    done = true;
                     break;
                 }
 
-                if ((masterCtr == 23 && values.values.Count == 7) || masterCtr == 23)
+                if (masterCtr == 22 || masterCtr == 52 || masterCtr == 98 || masterCtr == 165 
+                    || masterCtr == 257 || masterCtr == 378 || masterCtr == 531)
                 {
-                    if (masterCtr == 23 && values.values.Count == 6)
+                    values.curIncrementPosition--;
+                    values.subTractionValue++;
+
+                    if (values.curIncrementPosition <= 0)
                     {
+                        done = true;
                         break;
                     }
-
-                    if (masterCtr == 23 && values.values.Count == 7)
-                    {
-                        //maxValue++;// = values.values[values.values.Count - 1];
-                        curIncrementPosition--;
-                        subTractionValue++;
-                    }
                 }
 
-                int thisIndex = curIncrementPosition;
-                int compareValue = values.values[thisIndex];
-                if (compareValue == maxValue && ctr >= 5)                                   //increase 4th
+                values.Display();
+
+                //increase next position left? (i.e. smaller index)
+                int compareValue = values.values[values.curIncrementPosition];
+                if (compareValue == values.maxValue && ctr >= 5)                                   
                 {
-                    int tmpIncrementPosition = values.values.Count - subTractionValue;
+                    int tmpIncrementPosition = values.values.Count - values.subTractionValue;
                     values = HandleIncrement(values, tmpIncrementPosition);
                     ctr = -1;
-                }                                      
-
-                if (ctr % 2 == 0 && ctr >= 0)                                               //flip last 2
-                {
-                    values = HandleSimpleSwap(values, position);
                 }
-                else if (ctr % 2 != 0 && ctr >= 0)                                          //increase 3rd
+
+                //flip last 2
+                if (ctr % 2 == 0 && ctr >= 0)                                               
                 {
-                    values = HandleSubIncrement(values, curIncrementPosition, position);
+                    values.HandleSimpleSwap();
+                }
+                //increase next level up
+                else if (ctr % 2 != 0 && ctr >= 0)                                          
+                {
+                    values = HandleSubIncrement(values);
                 }
 
                 ctr++;
                 masterCtr++;
             }
         }
+
+        #region Algorithm Private Methods
 
         private AlgorithmList HandleIncrement(AlgorithmList values, int curIncrementPosition)
         {
@@ -121,11 +115,12 @@ namespace Algorithms.Permutation
 
             return values;
         }
-        private AlgorithmList HandleSubIncrement(AlgorithmList values, int curIncrementPosition, int position)
+
+        private AlgorithmList HandleSubIncrement(AlgorithmList values)
         {
             AlgorithmList values1 = new AlgorithmList();
 
-            int positionCtr = curIncrementPosition;
+            int positionCtr = values.curIncrementPosition;
             while (positionCtr < values.values.Count)
             {
                 values1.values.Add(values.values[positionCtr]);
@@ -133,17 +128,14 @@ namespace Algorithms.Permutation
             }
             values1.Sort();
 
-            int incrementedValue = values.values[curIncrementPosition];
+            int incrementedValue = values.values[values.curIncrementPosition];
             incrementedValue = GetNextBiggerNumber(values1, incrementedValue);
 
             values1.values.Remove(incrementedValue);
             values1.Sort();
-
-            //positionCtr = values.values.Count - curIncrementPosition;
-
-            //positionCtr = curIncrementPosition + 1;
-            values.values[curIncrementPosition] = incrementedValue;
-            positionCtr = curIncrementPosition + 1;
+            
+            values.values[values.curIncrementPosition] = incrementedValue;
+            positionCtr = values.curIncrementPosition + 1;
 
             int sortCtr = 0;
             while (positionCtr < values.values.Count)
@@ -152,14 +144,6 @@ namespace Algorithms.Permutation
                 positionCtr++;
                 sortCtr++;
             }
-
-            return values;
-        }
-        private AlgorithmList HandleSimpleSwap(AlgorithmList values, int position)
-        {
-            int tmp = values.values[position];
-            values.values[position] = values.values[position - 1];
-            values.values[position - 1] = tmp;
 
             return values;
         }
@@ -178,5 +162,30 @@ namespace Algorithms.Permutation
 
             return nxtValue;
         }
+
+        #endregion
+
+        #endregion
+
+        #region Non-Algorithm Methods
+
+        private AlgorithmList PreRunSteps()
+        {
+            Console.WriteLine("Starting Permutation Algorithm");
+            Console.WriteLine("Seed string - " + this.input);
+
+            AlgorithmList values = new AlgorithmList(this.input);
+            Console.Write("Seed string sorted - ");
+            values.Display(true);
+
+            return values;
+        }
+        private void PostRunSteps()
+        {
+            Console.WriteLine("Permutation Algorithm Complete!");
+            Console.WriteLine("");
+        }
+
+        #endregion
     }
 }
