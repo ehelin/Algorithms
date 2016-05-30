@@ -99,7 +99,7 @@ namespace Algorithms.Permutation
             }
 
             values1.values.Remove(incrementedValue);
-            values1.Sort();
+            values1.values = Utilities.Sort(values1.values);
 
             int positionCtr = curIncrementPosition;
             values.values[positionCtr] = incrementedValue;
@@ -126,14 +126,14 @@ namespace Algorithms.Permutation
                 values1.values.Add(values.values[positionCtr]);
                 positionCtr++;
             }
-            values1.Sort();
+            values1.values = Utilities.Sort(values1.values);
 
             int incrementedValue = values.values[values.curIncrementPosition];
             incrementedValue = GetNextBiggerNumber(values1, incrementedValue);
 
             values1.values.Remove(incrementedValue);
-            values1.Sort();
-            
+            values1.values = Utilities.Sort(values1.values);
+
             values.values[values.curIncrementPosition] = incrementedValue;
             positionCtr = values.curIncrementPosition + 1;
 

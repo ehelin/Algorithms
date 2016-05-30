@@ -65,25 +65,7 @@ namespace Algorithms.Permutation
             values[position - 1] = tmp;
         }
 
-        public void Sort()
-        {
-            //Starting with bubble sort for ease of use...replace with quick sort?
-            for (int outer = 0; outer < values.Count - 1; outer++)
-            {
-                for (int inner = 0; inner < values.Count - 1; inner++)
-                {
-                    if (inner + 1 > values.Count)
-                        break;
 
-                    if (values[inner] > values[inner + 1])
-                    {
-                        int val = values[inner];
-                        values[inner] = values[inner + 1];
-                        values[inner + 1] = val;
-                    }
-                }
-            }
-        }
         public void Display(bool omitNumbering = false)
         {
             string line = string.Empty;
@@ -116,7 +98,7 @@ namespace Algorithms.Permutation
                 values.Add(Convert.ToInt32(character));
             }
 
-            Sort();
+            values = Utilities.Sort(values);
             CreateCopy();
 
             this.curIncrementPosition = values.Count - 3;
