@@ -15,7 +15,7 @@ namespace Algorithms
             //RunTmp("122,35,12");
             RunTmp("1,4,3,2");
             //RunTmp("231,44,253,2");
-            RunTmp("1,4,5,3,2");
+            //RunTmp("1,4,5,3,2");
             //RunPermutationAlgorithm("1,4,3,2");
             //RunPermutationAlgorithm("1,4,3,5,2");
             //RunPermutationAlgorithm("1,4,3,6,5,2");

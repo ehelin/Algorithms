@@ -19,121 +19,82 @@ namespace Algorithms.Permutation
         {
             int endCnt = Utilities.CalculateFactorial(valuesList.Values.Count);
 
-            while (valuesList.DisplayCtr <= endCnt)
+            while (valuesList.DisplayCtr < endCnt)
             {
+                //HACK!
+                if (valuesList.ProcessingDone)
+                    break;
+
                 valuesList.Display();
+                valuesList.SetNextOperation();
+
                 valuesList = PerformListOperation(valuesList);     
             }
         }
 
+
+        //TODO - try factorial for that index level as the indicator to jump to the next level
         public ValuesList PerformListOperation(ValuesList valuesList)
         {
-            string operation = valuesList.GetOperation();
-            
-            if (operation == ListOperations.FLIP_LAST_TWO_LIST_MEMBERS)
+            if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.FLIP_LAST_TWO_LIST_MEMBERS)
             {
-                if (valuesList.Values[valuesList.Values.Count - ListOperationIndexes.INCREMENT_POSITION_ONE_INDEX] == valuesList.MaxValue
-                    && valuesList.Values.Count == ListOperationIndexes.INCREMENT_POSITION_ONE_INDEX)
-                {
-                    valuesList.ProcessingDone = true;
-                }
-                else
-                {
-                    valuesList.Values = HandleSimpleSwap(valuesList.Values);
-                    valuesList.SetNextOperation(ListOperations.INCREMENT_POSITION_TWO_REPEAT_SUB_OPERATIONS);
-                }
+                valuesList.Values = HandleSimpleSwap(valuesList.Values);              
             }
 
-            else if (operation == ListOperations.INCREMENT_POSITION_TWO_REPEAT_SUB_OPERATIONS)
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_TWO_REPEAT_SUB_OPERATIONS)
             {
-                //we are done
-                if (valuesList.Values.Count < ListOperationIndexes.INCREMENT_POSITION_TWO_INDEX
-                    || (valuesList.Values[valuesList.Values.Count - ListOperationIndexes.INCREMENT_POSITION_TWO_INDEX] == valuesList.MaxValue
-                    && valuesList.Values.Count == ListOperationIndexes.INCREMENT_POSITION_TWO_INDEX))
-                {
-                    valuesList.ProcessingDone = true;
-                }
-                //go on to next increment
-                else if (valuesList.Values[valuesList.Values.Count - ListOperationIndexes.INCREMENT_POSITION_TWO_INDEX] == valuesList.MaxValue
-                    && valuesList.Values.Count > ListOperationIndexes.INCREMENT_POSITION_TWO_INDEX)
-                {
-                    valuesList.SetNextOperation(ListOperations.INCREMENT_POSITION_THREE_REPEAT_SUB_OPERATIONS);
-                }
-                //perform this operation
-                else
-                {
-                    valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_TWO_INDEX);
-                    valuesList.SetNextOperation(ListOperations.FLIP_LAST_TWO_LIST_MEMBERS);
-                }
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_TWO_INDEX);             
             }
 
-            else if (operation == ListOperations.INCREMENT_POSITION_THREE_REPEAT_SUB_OPERATIONS)
+            else if(!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_THREE_REPEAT_SUB_OPERATIONS)
             {
-                //we are done
-                if (valuesList.Values.Count < ListOperationIndexes.INCREMENT_POSITION_THREE_INDEX
-                    || (valuesList.Values[valuesList.Values.Count - ListOperationIndexes.INCREMENT_POSITION_THREE_INDEX] == valuesList.MaxValue
-                    && valuesList.Values.Count == ListOperationIndexes.INCREMENT_POSITION_THREE_INDEX))
-                {
-                    valuesList.ProcessingDone = true;
-                }
-                //go on to next increment
-                else if (valuesList.Values[valuesList.Values.Count - ListOperationIndexes.INCREMENT_POSITION_THREE_INDEX] == valuesList.MaxValue
-                    && valuesList.Values.Count > ListOperationIndexes.INCREMENT_POSITION_THREE_INDEX)
-                {
-                    valuesList.SetNextOperation(ListOperations.INCREMENT_POSITION_FOUR_REPEAT_SUB_OPERATIONS);
-                }                
-                //perform this operation
-                else
-                {
-                    valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_THREE_INDEX);
-                    valuesList.SetNextOperation(ListOperations.FLIP_LAST_TWO_LIST_MEMBERS);
-                }
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_THREE_INDEX);
             }
 
-            else if (operation == ListOperations.INCREMENT_POSITION_FOUR_REPEAT_SUB_OPERATIONS)
-            {      
-                //we are done
-                if (valuesList.Values.Count < ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX
-                    || (valuesList.Values[valuesList.Values.Count - ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX] == valuesList.MaxValue
-                    && valuesList.Values.Count == ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX))
-                {
-                    valuesList.ProcessingDone = true;
-                }
-                //go on to next increment
-                else if (valuesList.Values[valuesList.Values.Count - ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX] == valuesList.MaxValue
-                    && valuesList.Values.Count > ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX)
-                {
-                    valuesList.SetNextOperation(ListOperations.INCREMENT_POSITION_FIVE_REPEAT_SUB_OPERATIONS);
-                }
-                //perform this operation
-                else
-                {
-                    valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX);
-                    valuesList.SetNextOperation(ListOperations.FLIP_LAST_TWO_LIST_MEMBERS);
-                }
-            }
+            //else if (operation == ListOperations.INCREMENT_POSITION_FOUR_REPEAT_SUB_OPERATIONS)
+            //{      
+            //    //we are done
+            //    if (valuesList.Values.Count < ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX
+            //        || (valuesList.Values[valuesList.Values.Count - ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX] == valuesList.MaxValue
+            //        && valuesList.Values.Count == ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX))
+            //    {
+            //        valuesList.ProcessingDone = true;
+            //    }
+            //    //go on to next increment
+            //    else if (valuesList.Values[valuesList.Values.Count - ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX] == valuesList.MaxValue
+            //        && valuesList.Values.Count > ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX)
+            //    {
+            //        valuesList.SetNextOperation(ListOperations.INCREMENT_POSITION_FIVE_REPEAT_SUB_OPERATIONS);
+            //    }
+            //    //perform this operation
+            //    else
+            //    {
+            //        valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX);
+            //        valuesList.SetNextOperation(ListOperations.FLIP_LAST_TWO_LIST_MEMBERS);
+            //    }
+            //}
 
-            else if (operation == ListOperations.INCREMENT_POSITION_FIVE_REPEAT_SUB_OPERATIONS)
-            {
+            //else if (operation == ListOperations.INCREMENT_POSITION_FIVE_REPEAT_SUB_OPERATIONS)
+            //{
 
-            }
+            //}
 
-            else if (operation == ListOperations.INCREMENT_POSITION_SIX_REPEAT_SUB_OPERATIONS)
-            {
+            //else if (operation == ListOperations.INCREMENT_POSITION_SIX_REPEAT_SUB_OPERATIONS)
+            //{
 
-            }
+            //}
 
-            else if (operation == ListOperations.INCREMENT_POSITION_SEVEN_REPEAT_SUB_OPERATIONS)
-            {
+            //else if (operation == ListOperations.INCREMENT_POSITION_SEVEN_REPEAT_SUB_OPERATIONS)
+            //{
 
-            }
+            //}
 
-            else if (operation == ListOperations.INCREMENT_POSITION_EIGHT_REPEAT_SUB_OPERATIONS)
-            {
+            //else if (operation == ListOperations.INCREMENT_POSITION_EIGHT_REPEAT_SUB_OPERATIONS)
+            //{
 
-            }
+            //}
 
-            else
+            else if (!valuesList.ProcessingDone)
                 throw new Exception("Unknown exception");
 
             //valuesList.CheckDoneState();

@@ -13,6 +13,8 @@ namespace Algorithms.Permutation
         public int MaxValue { get; set; }
         public bool ProcessingDone { get; set; }
         public int DisplayCtr { get; set; }
+        public string Operation { get; set; }
+        public int LineCtr { get; set; }
 
         public ValuesList(string input)
         {
@@ -22,66 +24,121 @@ namespace Algorithms.Permutation
             Init(input);
         }
 
-        public string GetOperation()
+        //public string GetOperation()
+        //{
+        //    string operation = string.Empty;
+
+        //    if (Values.Count >= 1 && ValuesOperationList[ValuesOperationList.Count - 1] == 0)
+        //    {
+        //        operation = ListOperations.FLIP_LAST_TWO_LIST_MEMBERS;
+        //    }
+
+        //    else if (Values.Count >= 2 
+        //        && ValuesOperationList[ValuesOperationList.Count - 2] == 1
+        //        ValuesOperationList[ValuesOperationList.Count - 1] == 1)
+        //    {
+        //        operation = ListOperations.INCREMENT_POSITION_TWO_REPEAT_SUB_OPERATIONS;
+        //    }
+
+        //    else if (Values.Count >= 3 && ValuesOperationList[ValuesOperationList.Count - 3] == 1)
+        //        operation = ListOperations.INCREMENT_POSITION_THREE_REPEAT_SUB_OPERATIONS;
+
+        //    else if (Values.Count >= 4 && ValuesOperationList[ValuesOperationList.Count - 4] == 1)
+        //        operation = ListOperations.INCREMENT_POSITION_FOUR_REPEAT_SUB_OPERATIONS;
+
+        //    else if (Values.Count >= 5 && ValuesOperationList[ValuesOperationList.Count - 5] == 1)
+        //        operation = ListOperations.INCREMENT_POSITION_FIVE_REPEAT_SUB_OPERATIONS;
+
+        //    else if (Values.Count >= 6 && ValuesOperationList[ValuesOperationList.Count - 6] == 1)
+        //        operation = ListOperations.INCREMENT_POSITION_SIX_REPEAT_SUB_OPERATIONS;
+
+        //    else if (Values.Count >= 7 && ValuesOperationList[ValuesOperationList.Count - 7] == 1)
+        //        operation = ListOperations.INCREMENT_POSITION_SEVEN_REPEAT_SUB_OPERATIONS;
+
+        //    else if (Values.Count >= 8 && ValuesOperationList[ValuesOperationList.Count - 8] == 1)
+        //        operation = ListOperations.INCREMENT_POSITION_EIGHT_REPEAT_SUB_OPERATIONS;
+
+        //    else
+        //        throw new Exception("Unknown operation");
+
+        //    return operation;
+        //}
+        public void SetNextOperation()
         {
-            string operation = string.Empty;
+            if (ValuesOperationList[ValuesOperationList.Count - 1] == 0)
+            {
+                Operation = ListOperations.FLIP_LAST_TWO_LIST_MEMBERS;
+                ValuesOperationList[ValuesOperationList.Count - 1]++;
+            }
 
-            if (Values.Count >= 1 && ValuesOperationList[ValuesOperationList.Count - 1] == 1)
-                operation = ListOperations.FLIP_LAST_TWO_LIST_MEMBERS;
+            else if (ValuesOperationList[ValuesOperationList.Count - 1] == 1
+                && ValuesOperationList[ValuesOperationList.Count - 2] <= 2)
+            {
+                if (Values.Count < ListOperationIndexes.INCREMENT_POSITION_TWO_INDEX)
+                {
+                    this.ProcessingDone = true;
+                }
+                else if (ValuesOperationList[ValuesOperationList.Count - 1] == 1
+                    && ValuesOperationList[ValuesOperationList.Count - 2] == 2
+                    && Values.Count == 3)
+                {
+                    this.ProcessingDone = true;
+                }
+                else if (ValuesOperationList[ValuesOperationList.Count - 1] == 1
+                   && ValuesOperationList[ValuesOperationList.Count - 2] == 2
+                   && Values.Count == 4)
+                {
+                    Operation = ListOperations.INCREMENT_POSITION_THREE_REPEAT_SUB_OPERATIONS;
+                    ValuesOperationList[ValuesOperationList.Count - 3]++;
+                    ValuesOperationList[ValuesOperationList.Count - 2] = 0;
+                    ValuesOperationList[ValuesOperationList.Count - 1] = 0;
+                }
+                else
+                {
+                    Operation = ListOperations.INCREMENT_POSITION_TWO_REPEAT_SUB_OPERATIONS;
+                    ValuesOperationList[ValuesOperationList.Count - 2]++;
+                    ValuesOperationList[ValuesOperationList.Count - 1] = 0;
+                }
+            }
 
-            else if (Values.Count >= 2 && ValuesOperationList[ValuesOperationList.Count - 2] == 1)
-                operation = ListOperations.INCREMENT_POSITION_TWO_REPEAT_SUB_OPERATIONS;
+            else if (ValuesOperationList[ValuesOperationList.Count - 1] == 1
+                && ValuesOperationList[ValuesOperationList.Count - 2] == 2
+                && ValuesOperationList[ValuesOperationList.Count - 3] <= 3)
+            {
+                if (Values.Count < ListOperationIndexes.INCREMENT_POSITION_THREE_INDEX)
+                {
+                    this.ProcessingDone = true;
+                }
+                else if (ValuesOperationList[ValuesOperationList.Count - 1] == 1
+                    && ValuesOperationList[ValuesOperationList.Count - 2] == 2
+                    && ValuesOperationList[ValuesOperationList.Count - 3] == 3
+                    && Values.Count == 4)
+                {
+                    this.ProcessingDone = true;
+                }
+                else
+                {
+                    Operation = ListOperations.INCREMENT_POSITION_THREE_REPEAT_SUB_OPERATIONS;
+                    ValuesOperationList[ValuesOperationList.Count - 3]++;
+                    ValuesOperationList[ValuesOperationList.Count - 2] = 0;
+                    ValuesOperationList[ValuesOperationList.Count - 1] = 0;
+                }
+            }
 
-            else if (Values.Count >= 3 && ValuesOperationList[ValuesOperationList.Count - 3] == 1)
-                operation = ListOperations.INCREMENT_POSITION_THREE_REPEAT_SUB_OPERATIONS;
+            //else if (operation == ListOperations.INCREMENT_POSITION_FOUR_REPEAT_SUB_OPERATIONS)
+            //    ValuesOperationList[ValuesOperationList.Count - 4] = 1;
 
-            else if (Values.Count >= 4 && ValuesOperationList[ValuesOperationList.Count - 4] == 1)
-                operation = ListOperations.INCREMENT_POSITION_FOUR_REPEAT_SUB_OPERATIONS;
+            //else if (operation == ListOperations.INCREMENT_POSITION_FIVE_REPEAT_SUB_OPERATIONS)
+            //    ValuesOperationList[ValuesOperationList.Count - 5] = 1;
 
-            else if (Values.Count >= 5 && ValuesOperationList[ValuesOperationList.Count - 5] == 1)
-                operation = ListOperations.INCREMENT_POSITION_FIVE_REPEAT_SUB_OPERATIONS;
+            //else if (operation == ListOperations.INCREMENT_POSITION_SIX_REPEAT_SUB_OPERATIONS)
+            //    ValuesOperationList[ValuesOperationList.Count - 6] = 1;
 
-            else if (Values.Count >= 6 && ValuesOperationList[ValuesOperationList.Count - 6] == 1)
-                operation = ListOperations.INCREMENT_POSITION_SIX_REPEAT_SUB_OPERATIONS;
+            //else if (operation == ListOperations.INCREMENT_POSITION_SEVEN_REPEAT_SUB_OPERATIONS)
+            //    ValuesOperationList[ValuesOperationList.Count - 7] = 1;
 
-            else if (Values.Count >= 7 && ValuesOperationList[ValuesOperationList.Count - 7] == 1)
-                operation = ListOperations.INCREMENT_POSITION_SEVEN_REPEAT_SUB_OPERATIONS;
-
-            else if (Values.Count >= 8 && ValuesOperationList[ValuesOperationList.Count - 8] == 1)
-                operation = ListOperations.INCREMENT_POSITION_EIGHT_REPEAT_SUB_OPERATIONS;
-
-            else
-                throw new Exception("Unknown operation");
-
-            return operation;
-        }
-        public void SetNextOperation(string operation)
-        {
-            SetOperationListToZero();
-
-            if (operation == ListOperations.FLIP_LAST_TWO_LIST_MEMBERS)
-                ValuesOperationList[ValuesOperationList.Count - 1] = 1;
-
-            else if (operation == ListOperations.INCREMENT_POSITION_TWO_REPEAT_SUB_OPERATIONS)
-                ValuesOperationList[ValuesOperationList.Count - 2] = 1;
-
-            else if (operation == ListOperations.INCREMENT_POSITION_THREE_REPEAT_SUB_OPERATIONS)
-                ValuesOperationList[ValuesOperationList.Count - 3] = 1;
-
-            else if (operation == ListOperations.INCREMENT_POSITION_FOUR_REPEAT_SUB_OPERATIONS)
-                ValuesOperationList[ValuesOperationList.Count - 4] = 1;
-
-            else if (operation == ListOperations.INCREMENT_POSITION_FIVE_REPEAT_SUB_OPERATIONS)
-                ValuesOperationList[ValuesOperationList.Count - 5] = 1;
-
-            else if (operation == ListOperations.INCREMENT_POSITION_SIX_REPEAT_SUB_OPERATIONS)
-                ValuesOperationList[ValuesOperationList.Count - 6] = 1;
-
-            else if (operation == ListOperations.INCREMENT_POSITION_SEVEN_REPEAT_SUB_OPERATIONS)
-                ValuesOperationList[ValuesOperationList.Count - 7] = 1;
-
-            else if (operation == ListOperations.INCREMENT_POSITION_EIGHT_REPEAT_SUB_OPERATIONS)
-                ValuesOperationList[ValuesOperationList.Count - 8] = 1;
+            //else if (operation == ListOperations.INCREMENT_POSITION_EIGHT_REPEAT_SUB_OPERATIONS)
+            //    ValuesOperationList[ValuesOperationList.Count - 8] = 1;
 
         }
 
@@ -98,7 +155,8 @@ namespace Algorithms.Permutation
             {
                 if (!omitNumbering)
                 {
-                    Console.Write(String.Format("{0:000}", DisplayCtr) + "-");
+                    Console.Write(String.Format("{0:000}", LineCtr) + "-");
+                    LineCtr++;
                     DisplayCtr++;
                 }
 
@@ -129,10 +187,8 @@ namespace Algorithms.Permutation
             Values = Utilities.Sort(Values);
             this.MaxValue = Values[Values.Count - 1];
 
-            DisplayCtr = 1;
-
-            //set first operation
-            ValuesOperationList[ValuesOperationList.Count - 1] = 1;
+            DisplayCtr = 0;
+            LineCtr = 1;
         }
     }
 }
