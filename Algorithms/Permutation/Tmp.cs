@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Algorithms.Permutation
 {
@@ -18,22 +15,28 @@ namespace Algorithms.Permutation
         public void Run()
         {
             int endCnt = Utilities.CalculateFactorial(valuesList.Values.Count);
-
+            
             while (valuesList.DisplayCtr < endCnt)
             {
                 //HACK!
                 if (valuesList.ProcessingDone)
                     break;
-
+               
                 valuesList.Display();
                 valuesList.SetNextOperation();
 
                 valuesList = PerformListOperation(valuesList);     
             }
+
+            Console.WriteLine("Factorial for " + valuesList.Values.Count.ToString() + " is " + endCnt.ToString());
+            Console.WriteLine("Press key when ready for next!");
+            string result = string.Empty;
+            while (result != "'")
+            {
+                result = Console.ReadLine();
+            }
         }
-
-
-        //TODO - try factorial for that index level as the indicator to jump to the next level
+        
         public ValuesList PerformListOperation(ValuesList valuesList)
         {
             if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.FLIP_LAST_TWO_LIST_MEMBERS)
@@ -51,54 +54,44 @@ namespace Algorithms.Permutation
                 valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_THREE_INDEX);
             }
 
-            //else if (operation == ListOperations.INCREMENT_POSITION_FOUR_REPEAT_SUB_OPERATIONS)
-            //{      
-            //    //we are done
-            //    if (valuesList.Values.Count < ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX
-            //        || (valuesList.Values[valuesList.Values.Count - ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX] == valuesList.MaxValue
-            //        && valuesList.Values.Count == ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX))
-            //    {
-            //        valuesList.ProcessingDone = true;
-            //    }
-            //    //go on to next increment
-            //    else if (valuesList.Values[valuesList.Values.Count - ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX] == valuesList.MaxValue
-            //        && valuesList.Values.Count > ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX)
-            //    {
-            //        valuesList.SetNextOperation(ListOperations.INCREMENT_POSITION_FIVE_REPEAT_SUB_OPERATIONS);
-            //    }
-            //    //perform this operation
-            //    else
-            //    {
-            //        valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX);
-            //        valuesList.SetNextOperation(ListOperations.FLIP_LAST_TWO_LIST_MEMBERS);
-            //    }
-            //}
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_FOUR_REPEAT_SUB_OPERATIONS)
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX);
+            }
 
-            //else if (operation == ListOperations.INCREMENT_POSITION_FIVE_REPEAT_SUB_OPERATIONS)
-            //{
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_FIVE_REPEAT_SUB_OPERATIONS)
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_FIVE_INDEX);
+            }
 
-            //}
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_SIX_REPEAT_SUB_OPERATIONS)
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_SIX_INDEX);
+            }
+            
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_SEVEN_REPEAT_SUB_OPERATIONS)
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_SEVEN_INDEX);
+            }
 
-            //else if (operation == ListOperations.INCREMENT_POSITION_SIX_REPEAT_SUB_OPERATIONS)
-            //{
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_EIGHT_REPEAT_SUB_OPERATIONS)
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_EIGHT_INDEX);
+            }
 
-            //}
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_NINE_REPEAT_SUB_OPERATIONS)
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_NINE_INDEX);
+            }
 
-            //else if (operation == ListOperations.INCREMENT_POSITION_SEVEN_REPEAT_SUB_OPERATIONS)
-            //{
-
-            //}
-
-            //else if (operation == ListOperations.INCREMENT_POSITION_EIGHT_REPEAT_SUB_OPERATIONS)
-            //{
-
-            //}
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_TEN_REPEAT_SUB_OPERATIONS)
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_TEN_INDEX);
+            }
 
             else if (!valuesList.ProcessingDone)
                 throw new Exception("Unknown exception");
-
-            //valuesList.CheckDoneState();
-
+            
             return valuesList;
         }
 
@@ -135,7 +128,6 @@ namespace Algorithms.Permutation
             positionCtr = (values.Count - incrementPosition) + 1;
 
             int sortCtr = 0;
-            //positionCtr = values.Count - 1;
             while (positionCtr < values.Count)
             {
                 values[positionCtr] = values1[sortCtr];
@@ -143,36 +135,6 @@ namespace Algorithms.Permutation
                 sortCtr++;
             }
 
-            return values;
-        }
-        
-        public List<int> IncrementPositionThree(List<int> values)
-        {
-            return values;
-        }
-
-        public List<int> IncrementPositionFour(List<int> values)
-        {
-            return values;
-        }
-
-        public List<int> IncrementPositionFive(List<int> values)
-        {
-            return values;
-        }
-
-        public List<int> IncrementPositionSix(List<int> values)
-        {
-            return values;
-        }
-
-        public List<int> IncrementPositionSeven(List<int> values)
-        {
-            return values;
-        }
-
-        public List<int> IncrementPositionEight(List<int> values)
-        {
             return values;
         }
     }

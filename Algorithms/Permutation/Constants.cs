@@ -10,6 +10,12 @@
         public const int INCREMENT_POSITION_TWO_INDEX = 3;
         public const int INCREMENT_POSITION_THREE_INDEX = 4;
         public const int INCREMENT_POSITION_FOUR_INDEX = 5;
+        public const int INCREMENT_POSITION_FIVE_INDEX = 6;
+        public const int INCREMENT_POSITION_SIX_INDEX = 7;
+        public const int INCREMENT_POSITION_SEVEN_INDEX = 8;
+        public const int INCREMENT_POSITION_EIGHT_INDEX = 9;
+        public const int INCREMENT_POSITION_NINE_INDEX = 10;
+        public const int INCREMENT_POSITION_TEN_INDEX = 11;
     }
     public class ListOperations
     {
@@ -36,6 +42,9 @@
 
         //[1,0,0,0,0,0,0,0]
         public const string INCREMENT_POSITION_EIGHT_REPEAT_SUB_OPERATIONS = "INCREMENT_POSITION_EIGHT_REPEAT_SUB_OPERATIONS";
+
+        public const string INCREMENT_POSITION_NINE_REPEAT_SUB_OPERATIONS = "INCREMENT_POSITION_NINE_REPEAT_SUB_OPERATIONS";
+        public const string INCREMENT_POSITION_TEN_REPEAT_SUB_OPERATIONS = "INCREMENT_POSITION_TEN_REPEAT_SUB_OPERATIONS";
 
     }
 }

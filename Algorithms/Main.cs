@@ -9,21 +9,33 @@ namespace Algorithms
     {
         public void Run()
         {
-            RunTmp("1,2");
+            //RunTmp("1,2");
             //RunTmp("11,222");
-            RunTmp("1,3,2");
+
+            //RunTmp("1,3,2");
             //RunTmp("122,35,12");
-            RunTmp("1,4,3,2");
+
+            //RunTmp("1,4,3,2");
             //RunTmp("231,44,253,2");
+
             //RunTmp("1,4,5,3,2");
-            //RunPermutationAlgorithm("1,4,3,2");
-            //RunPermutationAlgorithm("1,4,3,5,2");
-            //RunPermutationAlgorithm("1,4,3,6,5,2");
-            //RunPermutationAlgorithm("1,4,3,6,5,2,7");
-            //RunPermutationAlgorithm("1,4,3,6,8,5,2,7");
-            //RunPermutationAlgorithm("1,4,9,3,6,8,5,2,7");
-            //RunPermutationAlgorithm("1,4,9,3,6,10,8,5,2,7");
-            //RunPermutationAlgorithm("1,4,11,9,3,6,10,8,5,2,7");
+            //RunTmp("21,4,524,3,12");
+
+            //RunTmp("6,1,4,5,3,2");
+            //RunTmp("21,4,524,3,12,235");
+
+            //RunTmp("6,7,1,4,5,3,2");
+            //RunTmp("6,74,11,4,5,1451,2");
+
+            //RunTmp("6,7,1,4,5,3,2,8");
+            //RunTmp("6,7,12,4,53,3124,2,86");
+
+            //RunTmp("6,7,1,4,5,9,3,2,8");
+            //RunTmp("6,1247,13,4,5,1249,3,212,81");
+
+            RunTmp("6,7,1,10,4,5,9,3,2,8");
+            //RunTmp("62532,7,1,1230,42,5,9,325,2,81231");
+
             //RunTravelingSalesman();
             //RunGeneticAlgorithm();
 
