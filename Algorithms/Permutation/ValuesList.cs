@@ -5,14 +5,48 @@ namespace Algorithms.Permutation
 {
     public class ValuesList
     {
+        /// <summary>
+        /// List of values being processed
+        /// </summary>
         public List<int> Values { get; set; }
+
+        /// <summary>
+        /// List of operations - 00000 - flip last two, 00001 - increment second to last, 00021 - increment third to last, etc
+        /// </summary>
         public List<int> ValuesOperationList { get; set; }
+
+        /// <summary>
+        /// Max value possible in any column  (i.e. max value in sorted sequence)
+        /// </summary>
         public int MaxValue { get; set; }
+
+        /// <summary>
+        /// All permutations possible calculated
+        /// </summary>
         public bool ProcessingDone { get; set; }
+
+        /// <summary>
+        /// Counter on display
+        /// </summary>
         public int DisplayCtr { get; set; }
+
+        /// <summary>
+        /// Operation to be applied to next interation
+        /// </summary>
         public string Operation { get; set; }
+        
+        //DO I need this?
         public int LineCtr { get; set; }
 
+        /// <summary>
+        /// Last sequence displayed to user
+        /// </summary>
+        private string lastDisplay = string.Empty;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="input"></param>
         public ValuesList(string input)
         {
             Values = new List<int>();
@@ -21,6 +55,7 @@ namespace Algorithms.Permutation
             Init(input);
         }
 
+        //TODO - refactor
         public void SetNextOperation()
         {
             if (ValuesOperationList[ValuesOperationList.Count - 1] == 0)
@@ -236,9 +271,7 @@ namespace Algorithms.Permutation
             }
 
         }
-
-        private string lastDisplay = string.Empty;
-        public void Display(bool omitNumbering = false)
+        public void Display(bool showDisplay, bool omitNumbering = false)
         {
             string line = string.Empty;
 
@@ -248,19 +281,27 @@ namespace Algorithms.Permutation
 
             if (lastDisplay != line)
             {
-                if (!omitNumbering)
+                if (showDisplay)
                 {
-                    Console.Write(String.Format("{0:000}", LineCtr) + "-");
-                    LineCtr++;
-                    DisplayCtr++;
-                }
+                    if (!omitNumbering)
+                    {
+                        Console.Write(String.Format("{0:000}", LineCtr) + "-");
+                        LineCtr++;
+                        DisplayCtr++;
+                    }
 
-                Console.Write(line);
-                Console.Write("\n");
+                    Console.Write(line);
+                    Console.Write("\n");
+                }
 
                 lastDisplay = line;
             }
         }
+        public string GetLastDisplay()
+        {
+            return lastDisplay;
+        }
+
 
         private void SetOperationListToZero()
         {

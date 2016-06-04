@@ -42,10 +42,7 @@
     <Compile Include="Genetic\Algorithm.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Permutation\Algorithm.cs" />
-    <Compile Include="Permutation\AlgorithmList.cs" />
     <Compile Include="Permutation\Constants.cs" />
-    <Compile Include="Permutation\Enumerations.cs" />
-    <Compile Include="Permutation\Tmp.cs" />
     <Compile Include="Permutation\Utilities.cs" />
     <Compile Include="Permutation\ValuesList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Algorithms.Permutation
 {
@@ -29,7 +25,6 @@ namespace Algorithms.Permutation
 
             return values;
         }
-
         public static int CalculateFactorial(int value)
         {
             int factorial = value;
@@ -42,12 +37,6 @@ namespace Algorithms.Permutation
             }
 
             return factorial;
-        }
-        public static int GetNextBiggerNumber(AlgorithmList values, int curValue)
-        {
-            int nxtValue = GetNextBiggerNumber(values.values, curValue);            
-
-            return nxtValue;
         }
         public static int GetNextBiggerNumber(List<int> values, int curValue)
         {

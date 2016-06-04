@@ -1,191 +1,153 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Algorithms.Permutation
 {
-    /// <summary>
-    /// This algorithm finds (I hope :)) all the permutations for the last 4 numbers of a six number string.  I intent to use it in the traveling salesman algorithm
-    /// </summary>
     public class Algorithm
     {
-        //string of characters to calculate permutations on
-        private string input;
+        private ValuesList valuesList;
+        private long endCnt = 0;
+        private bool showDisplay = false;
 
-        public Algorithm(string input)
+        public Algorithm(string input, bool showDisplay)
         {
-            this.input = input;
+            this.valuesList = new ValuesList(input);
+            this.showDisplay = showDisplay;
         }
         
-        public void RunExample()
+        public void Run()
         {
-            AlgorithmList values = PreRunSteps();
-                                               
-            Run(values);
+            string result = string.Empty;
 
-            PostRunSteps();
-        }
+            RunPermutation();
 
-        #region Algorithm Methods
-
-        private void Run(AlgorithmList values)
-        {
-            int masterCtr = 0;
-            int ctr = 0;
-            bool done = false;
-
-            while (!done)
+            Console.WriteLine("Factorial for " + valuesList.Values.Count.ToString() + " is " + endCnt.ToString());
+            Console.WriteLine("Press key when ready for next!");
+            while (result != "'")
             {
-                //Try working in the ready to exit test and see if that will work in place of masterCtr tests
-                if (values.ReadyToExit())
-                {
-                    done = true;
-                    break;
-                }
-
-                if (masterCtr == 22 || masterCtr == 52 || masterCtr == 98 || masterCtr == 165 
-                    || masterCtr == 257 || masterCtr == 378 || masterCtr == 531)
-                {
-                    values.curIncrementPosition--;
-                    values.subTractionValue++;
-
-                    if (values.curIncrementPosition <= 0)
-                    {
-                        done = true;
-                        break;
-                    }
-                }
-
-                values.Display();
-
-                //increase next position left? (i.e. smaller index)
-                int compareValue = values.values[values.curIncrementPosition];
-                if (compareValue == values.maxValue && ctr >= 5)                                   
-                {
-                    int tmpIncrementPosition = values.values.Count - values.subTractionValue;
-                    values = HandleIncrement(values, tmpIncrementPosition);
-                    ctr = -1;
-                }
-
-                //flip last 2
-                if (ctr % 2 == 0 && ctr >= 0)                                               
-                {
-                    values.HandleSimpleSwap();
-                }
-                //increase next level up
-                else if (ctr % 2 != 0 && ctr >= 0)                                          
-                {
-                    values = HandleSubIncrement(values);
-                }
-
-                ctr++;
-                masterCtr++;
+                result = Console.ReadLine();
             }
         }
-
-        #region Algorithm Private Methods
-
-        private AlgorithmList HandleIncrement(AlgorithmList values, int curIncrementPosition)
+        public string RunReturnValue()
         {
-            int incrementedValue = values.values[curIncrementPosition];
-            int myCtr = curIncrementPosition;
-            //curIncrementPosition = curIncrementPosition + 1;
-            AlgorithmList values1 = new AlgorithmList();
-            incrementedValue++;
+            string result = RunPermutation();
 
-            while (myCtr < values.values.Count)
+            return result;
+        }
+
+        private string RunPermutation()
+        {
+            endCnt = Utilities.CalculateFactorial(valuesList.Values.Count);
+            string result = string.Empty;
+
+            while (valuesList.DisplayCtr < endCnt)
             {
-                values1.values.Add(values.values[myCtr]);
-                myCtr++;
+                valuesList.Display(showDisplay);
+                valuesList.SetNextOperation();
+
+                valuesList = PerformListOperation(valuesList);
             }
 
-            values1.values.Remove(incrementedValue);
-            values1.values = Utilities.Sort(values1.values);
+            result = valuesList.GetLastDisplay();
 
-            int positionCtr = curIncrementPosition;
-            values.values[positionCtr] = incrementedValue;
-            positionCtr++;
+            return result;
+        }
+        private ValuesList PerformListOperation(ValuesList valuesList)
+        {
+            if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.FLIP_LAST_TWO_LIST_MEMBERS)
+            {
+                valuesList.Values = HandleSimpleSwap(valuesList.Values);
+            }
+
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_TWO_REPEAT_SUB_OPERATIONS)
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_TWO_INDEX);
+            }
+
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_THREE_REPEAT_SUB_OPERATIONS)
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_THREE_INDEX);
+            }
+
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_FOUR_REPEAT_SUB_OPERATIONS)
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX);
+            }
+
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_FIVE_REPEAT_SUB_OPERATIONS)
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_FIVE_INDEX);
+            }
+
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_SIX_REPEAT_SUB_OPERATIONS)
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_SIX_INDEX);
+            }
+
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_SEVEN_REPEAT_SUB_OPERATIONS)
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_SEVEN_INDEX);
+            }
+
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_EIGHT_REPEAT_SUB_OPERATIONS)
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_EIGHT_INDEX);
+            }
+
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_NINE_REPEAT_SUB_OPERATIONS)
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_NINE_INDEX);
+            }
+
+            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_TEN_REPEAT_SUB_OPERATIONS)
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_TEN_INDEX);
+            }
+
+            else if (!valuesList.ProcessingDone)
+                throw new Exception("Unknown exception");
+
+            return valuesList;
+        }
+        private List<int> HandleSimpleSwap(List<int> values)
+        {
+            int position = values.Count - 1;
+            int tmp = values[position];
+            values[position] = values[position - 1];
+            values[position - 1] = tmp;
+
+            return values;
+        }
+        private List<int> IncrementPosition(List<int> values, int incrementPosition)
+        {
+            List<int> values1 = new List<int>();
+
+            int positionCtr = values.Count - incrementPosition;
+            while (positionCtr < values.Count)
+            {
+                values1.Add(values[positionCtr]);
+                positionCtr++;
+            }
+            values1 = Utilities.Sort(values1);
+
+            int valueToIncrement = values[values.Count - incrementPosition];
+            int incrementedValue = Utilities.GetNextBiggerNumber(values1, valueToIncrement);
+
+            values1.Remove(incrementedValue);
+            values1 = Utilities.Sort(values1);
+
+            values[values.Count - incrementPosition] = incrementedValue;
+            positionCtr = (values.Count - incrementPosition) + 1;
 
             int sortCtr = 0;
-            while (positionCtr < values.values.Count)
+            while (positionCtr < values.Count)
             {
-                values.values[positionCtr] = values1.values[sortCtr];
+                values[positionCtr] = values1[sortCtr];
                 positionCtr++;
                 sortCtr++;
             }
 
             return values;
         }
-
-        private AlgorithmList HandleSubIncrement(AlgorithmList values)
-        {
-            AlgorithmList values1 = new AlgorithmList();
-
-            int positionCtr = values.curIncrementPosition;
-            while (positionCtr < values.values.Count)
-            {
-                values1.values.Add(values.values[positionCtr]);
-                positionCtr++;
-            }
-            values1.values = Utilities.Sort(values1.values);
-
-            int incrementedValue = values.values[values.curIncrementPosition];
-            incrementedValue = GetNextBiggerNumber(values1, incrementedValue);
-
-            values1.values.Remove(incrementedValue);
-            values1.values = Utilities.Sort(values1.values);
-
-            values.values[values.curIncrementPosition] = incrementedValue;
-            positionCtr = values.curIncrementPosition + 1;
-
-            int sortCtr = 0;
-            while (positionCtr < values.values.Count)
-            {
-                values.values[positionCtr] = values1.values[sortCtr];
-                positionCtr++;
-                sortCtr++;
-            }
-
-            return values;
-        }
-        private int GetNextBiggerNumber(AlgorithmList values, int curValue)
-        {
-            int nxtValue = 0;
-
-            foreach (int value in values.values)
-            {
-                if (value > curValue && value > nxtValue)
-                {
-                    nxtValue = value;
-                    break;
-                }
-            }
-
-            return nxtValue;
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Non-Algorithm Methods
-
-        private AlgorithmList PreRunSteps()
-        {
-            Console.WriteLine("Starting Permutation Algorithm");
-            Console.WriteLine("Seed string - " + this.input);
-
-            AlgorithmList values = new AlgorithmList(this.input);
-            Console.Write("Seed string sorted - ");
-            values.Display(true);
-
-            return values;
-        }
-        private void PostRunSteps()
-        {
-            Console.WriteLine("Permutation Algorithm Complete!");
-            Console.WriteLine("");
-        }
-
-        #endregion
     }
 }
