@@ -38,7 +38,7 @@ namespace Algorithms.Permutation
         /// <summary>
         /// Operation to be applied to next interation
         /// </summary>
-        public string Operation { get; set; }
+        public int Operation { get; set; }
         
         //DO I need this?
         public int LineCtr { get; set; }
@@ -64,7 +64,7 @@ namespace Algorithms.Permutation
         {
             if (Utilities.ExecuteCommand(ValuesOperationList, 1))
             {
-                Operation = ListOperations.FLIP_LAST_TWO_LIST_MEMBERS;
+                Operation = 1;
                 ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 1);
             }
             
@@ -72,7 +72,7 @@ namespace Algorithms.Permutation
             {
                 if (!Utilities.ProcessingDone(Values, 3, out doneProcessing))
                 {
-                    Operation = ListOperations.INCREMENT_POSITION_TWO_REPEAT_SUB_OPERATIONS;
+                    Operation = 2;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 2);
                 }
             }
@@ -81,7 +81,7 @@ namespace Algorithms.Permutation
             {
                 if (!Utilities.ProcessingDone(Values, 4, out doneProcessing))                
                 {
-                    Operation = ListOperations.INCREMENT_POSITION_THREE_REPEAT_SUB_OPERATIONS;
+                    Operation = 3;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 3);
                 }
             }
@@ -90,7 +90,7 @@ namespace Algorithms.Permutation
             {
                 if (!Utilities.ProcessingDone(Values, 5, out doneProcessing))
                 {
-                    Operation = ListOperations.INCREMENT_POSITION_FOUR_REPEAT_SUB_OPERATIONS;
+                    Operation = 4;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 4);
                 }
             }
@@ -99,7 +99,7 @@ namespace Algorithms.Permutation
             {
                 if (!Utilities.ProcessingDone(Values, 6, out doneProcessing))
                 {
-                    Operation = ListOperations.INCREMENT_POSITION_FIVE_REPEAT_SUB_OPERATIONS;
+                    Operation = 5;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 5);
                 }
             }
@@ -108,7 +108,7 @@ namespace Algorithms.Permutation
             {
                 if (!Utilities.ProcessingDone(Values, 7, out doneProcessing))
                 {
-                    Operation = ListOperations.INCREMENT_POSITION_SIX_REPEAT_SUB_OPERATIONS;
+                    Operation = 6;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 6);
                 }
             }
@@ -117,7 +117,7 @@ namespace Algorithms.Permutation
             {
                 if (!Utilities.ProcessingDone(Values, 8, out doneProcessing))
                 {
-                    Operation = ListOperations.INCREMENT_POSITION_SEVEN_REPEAT_SUB_OPERATIONS;
+                    Operation = 7;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 7);
                 }
             }
@@ -126,7 +126,7 @@ namespace Algorithms.Permutation
             {
                 if (!Utilities.ProcessingDone(Values, 9, out doneProcessing))
                 {
-                    Operation = ListOperations.INCREMENT_POSITION_EIGHT_REPEAT_SUB_OPERATIONS;
+                    Operation = 8;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 8);
                 }
             }
@@ -135,7 +135,7 @@ namespace Algorithms.Permutation
             {
                 if (!Utilities.ProcessingDone(Values, 10, out doneProcessing))
                 {
-                    Operation = ListOperations.INCREMENT_POSITION_NINE_REPEAT_SUB_OPERATIONS;
+                    Operation = 9;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 9);
                 }
             }
@@ -144,7 +144,7 @@ namespace Algorithms.Permutation
             {
                 if (!Utilities.ProcessingDone(Values, 11, out doneProcessing))
                 {
-                    Operation = ListOperations.INCREMENT_POSITION_TEN_REPEAT_SUB_OPERATIONS;
+                    Operation = 10;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 10);
                 }
             }

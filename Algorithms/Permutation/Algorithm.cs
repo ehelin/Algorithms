@@ -54,59 +54,15 @@ namespace Algorithms.Permutation
         }
         private ValuesList PerformListOperation(ValuesList valuesList)
         {
-            if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.FLIP_LAST_TWO_LIST_MEMBERS)
+            if (!valuesList.ProcessingDone && valuesList.Operation == 1)
             {
                 valuesList.Values = HandleSimpleSwap(valuesList.Values);
             }
-
-            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_TWO_REPEAT_SUB_OPERATIONS)
-            {
-                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_TWO_INDEX);
-            }
-
-            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_THREE_REPEAT_SUB_OPERATIONS)
-            {
-                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_THREE_INDEX);
-            }
-
-            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_FOUR_REPEAT_SUB_OPERATIONS)
-            {
-                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX);
-            }
-
-            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_FIVE_REPEAT_SUB_OPERATIONS)
-            {
-                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_FIVE_INDEX);
-            }
-
-            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_SIX_REPEAT_SUB_OPERATIONS)
-            {
-                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_SIX_INDEX);
-            }
-
-            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_SEVEN_REPEAT_SUB_OPERATIONS)
-            {
-                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_SEVEN_INDEX);
-            }
-
-            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_EIGHT_REPEAT_SUB_OPERATIONS)
-            {
-                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_EIGHT_INDEX);
-            }
-
-            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_NINE_REPEAT_SUB_OPERATIONS)
-            {
-                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_NINE_INDEX);
-            }
-
-            else if (!valuesList.ProcessingDone && valuesList.Operation == ListOperations.INCREMENT_POSITION_TEN_REPEAT_SUB_OPERATIONS)
-            {
-                valuesList.Values = this.IncrementPosition(valuesList.Values, ListOperationIndexes.INCREMENT_POSITION_TEN_INDEX);
-            }
-
             else if (!valuesList.ProcessingDone)
-                throw new Exception("Unknown exception");
-
+            {
+                valuesList.Values = this.IncrementPosition(valuesList.Values, valuesList.Operation + 1);
+            }
+           
             return valuesList;
         }
         private List<int> HandleSimpleSwap(List<int> values)
