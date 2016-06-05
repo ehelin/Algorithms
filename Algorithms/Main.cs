@@ -9,7 +9,8 @@ namespace Algorithms
     {
         public void Run()
         {
-            RunTmp("6,7,1,10,4,5,9,3,2,8");
+            RunTmp("3,2,1");
+            //RunTmp("6,7,1,10,4,5,9,3,2,8");
 
             //RunTravelingSalesman();
             //RunGeneticAlgorithm();

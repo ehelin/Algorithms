@@ -61,7 +61,7 @@ namespace Algorithms.Permutation
             if (ValuesOperationList[ValuesOperationList.Count - 1] == 0)
             {
                 Operation = ListOperations.FLIP_LAST_TWO_LIST_MEMBERS;
-                ValuesOperationList[ValuesOperationList.Count - 1]++;
+                ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 1);
             }
 
             else if (ValuesOperationList[ValuesOperationList.Count - 1] == 1
@@ -74,8 +74,7 @@ namespace Algorithms.Permutation
                 else
                 {
                     Operation = ListOperations.INCREMENT_POSITION_TWO_REPEAT_SUB_OPERATIONS;
-                    ValuesOperationList[ValuesOperationList.Count - 2]++;
-                    ValuesOperationList[ValuesOperationList.Count - 1] = 0;
+                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 2);
                 }
             }
 
@@ -90,9 +89,7 @@ namespace Algorithms.Permutation
                 else
                 {
                     Operation = ListOperations.INCREMENT_POSITION_THREE_REPEAT_SUB_OPERATIONS;
-                    ValuesOperationList[ValuesOperationList.Count - 3]++;
-                    ValuesOperationList[ValuesOperationList.Count - 2] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 1] = 0;
+                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 3);
                 }
             }
 
@@ -108,10 +105,7 @@ namespace Algorithms.Permutation
                 else
                 {
                     Operation = ListOperations.INCREMENT_POSITION_FOUR_REPEAT_SUB_OPERATIONS;
-                    ValuesOperationList[ValuesOperationList.Count - 4]++;
-                    ValuesOperationList[ValuesOperationList.Count - 3] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 2] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 1] = 0;
+                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 4);
                 }
             }
 
@@ -128,11 +122,7 @@ namespace Algorithms.Permutation
                 else
                 {
                     Operation = ListOperations.INCREMENT_POSITION_FIVE_REPEAT_SUB_OPERATIONS;
-                    ValuesOperationList[ValuesOperationList.Count - 5]++;
-                    ValuesOperationList[ValuesOperationList.Count - 4] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 3] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 2] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 1] = 0;
+                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 5);
                 }
             }
 
@@ -150,12 +140,7 @@ namespace Algorithms.Permutation
                 else
                 {
                     Operation = ListOperations.INCREMENT_POSITION_SIX_REPEAT_SUB_OPERATIONS;
-                    ValuesOperationList[ValuesOperationList.Count - 6]++;
-                    ValuesOperationList[ValuesOperationList.Count - 5] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 4] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 3] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 2] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 1] = 0;
+                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 6);
                 }
             }
 
@@ -174,13 +159,7 @@ namespace Algorithms.Permutation
                 else
                 {
                     Operation = ListOperations.INCREMENT_POSITION_SEVEN_REPEAT_SUB_OPERATIONS;
-                    ValuesOperationList[ValuesOperationList.Count - 7]++;
-                    ValuesOperationList[ValuesOperationList.Count - 6] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 5] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 4] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 3] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 2] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 1] = 0;
+                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 7);
                 }
             }
 
@@ -200,14 +179,7 @@ namespace Algorithms.Permutation
                 else
                 {
                     Operation = ListOperations.INCREMENT_POSITION_EIGHT_REPEAT_SUB_OPERATIONS;
-                    ValuesOperationList[ValuesOperationList.Count - 8]++;
-                    ValuesOperationList[ValuesOperationList.Count - 7] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 6] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 5] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 4] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 3] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 2] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 1] = 0;
+                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 8);
                 }
             }
 
@@ -228,15 +200,7 @@ namespace Algorithms.Permutation
                 else
                 {
                     Operation = ListOperations.INCREMENT_POSITION_NINE_REPEAT_SUB_OPERATIONS;
-                    ValuesOperationList[ValuesOperationList.Count - 9]++;
-                    ValuesOperationList[ValuesOperationList.Count - 8] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 7] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 6] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 5] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 4] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 3] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 2] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 1] = 0;
+                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 9);
                 }
             }
             else if (ValuesOperationList[ValuesOperationList.Count - 1] == 1
@@ -257,16 +221,7 @@ namespace Algorithms.Permutation
                 else
                 {
                     Operation = ListOperations.INCREMENT_POSITION_TEN_REPEAT_SUB_OPERATIONS;
-                    ValuesOperationList[ValuesOperationList.Count - 10]++;
-                    ValuesOperationList[ValuesOperationList.Count - 9] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 8] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 7] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 6] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 5] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 4] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 3] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 2] = 0;
-                    ValuesOperationList[ValuesOperationList.Count - 1] = 0;
+                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 10);
                 }
             }
 
@@ -281,15 +236,17 @@ namespace Algorithms.Permutation
 
             if (lastDisplay != line)
             {
+                if (!omitNumbering)
+                {
+                    if (showDisplay)
+                        Console.Write(String.Format("{0:000}", LineCtr) + "-");
+
+                    DisplayCtr++;
+                    LineCtr++;
+                }
+
                 if (showDisplay)
                 {
-                    if (!omitNumbering)
-                    {
-                        Console.Write(String.Format("{0:000}", LineCtr) + "-");
-                        LineCtr++;
-                        DisplayCtr++;
-                    }
-
                     Console.Write(line);
                     Console.Write("\n");
                 }
@@ -301,8 +258,7 @@ namespace Algorithms.Permutation
         {
             return lastDisplay;
         }
-
-
+        
         private void SetOperationListToZero()
         {
             for(int ctr = 0; ctr < ValuesOperationList.Count; ctr++)

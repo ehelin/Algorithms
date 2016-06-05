@@ -25,6 +25,32 @@ namespace Algorithms.Permutation
 
             return values;
         }
+        //TODO - issue is we are not zeroing out all values at right time
+        public static List<int> ResetOperationArray(List<int> ValuesOperationList, int indexToIncrement)
+        {
+            int ctr = indexToIncrement-1;
+            //ValuesOperationList.Count - 1
+            int curIndexValue = ValuesOperationList[ValuesOperationList.Count - indexToIncrement];
+            curIndexValue = curIndexValue + 1;
+
+            while (ctr > 0)
+            {
+                ValuesOperationList[ValuesOperationList.Count - ctr] = 0;
+                ctr--;
+            }
+            //if (curIndexValue == indexToIncrement)
+            //{
+            //    while (ctr < ValuesOperationList.Count)
+            //    {
+            //        ValuesOperationList[ctr] = 0;
+            //        ctr++;
+            //    }
+            //}
+
+            ValuesOperationList[ValuesOperationList.Count - indexToIncrement] = curIndexValue;
+
+            return ValuesOperationList;
+        }
         public static int CalculateFactorial(int value)
         {
             int factorial = value;
