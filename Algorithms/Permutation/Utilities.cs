@@ -25,11 +25,45 @@ namespace Algorithms.Permutation
 
             return values;
         }
-        //TODO - issue is we are not zeroing out all values at right time
+        public static bool ProcessingDone(List<int> Values, int compareValue, out bool doneProcessing)
+        {
+            doneProcessing = false;
+
+            if (Values.Count < compareValue)
+            {
+                doneProcessing = true;
+            }
+
+            return doneProcessing;
+        }
+        public static bool ExecuteCommand(List<int> ValuesOperationList,
+                                          int indexToIncrement)
+        {
+            bool executeCommand = true;
+            int ctr = indexToIncrement - 1;
+            int curIndexValue = ValuesOperationList[ValuesOperationList.Count - indexToIncrement];
+
+            while (ctr > 0)
+            {
+                if (ValuesOperationList[ValuesOperationList.Count - ctr] != ctr)
+                {
+                    executeCommand = false;
+                    break;
+                }
+
+                ctr--;
+            }
+
+            if (executeCommand && curIndexValue >= indexToIncrement)
+            {
+                executeCommand = false;
+            }
+
+            return executeCommand;
+        }
         public static List<int> ResetOperationArray(List<int> ValuesOperationList, int indexToIncrement)
         {
             int ctr = indexToIncrement-1;
-            //ValuesOperationList.Count - 1
             int curIndexValue = ValuesOperationList[ValuesOperationList.Count - indexToIncrement];
             curIndexValue = curIndexValue + 1;
 
@@ -38,14 +72,6 @@ namespace Algorithms.Permutation
                 ValuesOperationList[ValuesOperationList.Count - ctr] = 0;
                 ctr--;
             }
-            //if (curIndexValue == indexToIncrement)
-            //{
-            //    while (ctr < ValuesOperationList.Count)
-            //    {
-            //        ValuesOperationList[ctr] = 0;
-            //        ctr++;
-            //    }
-            //}
 
             ValuesOperationList[ValuesOperationList.Count - indexToIncrement] = curIndexValue;
 

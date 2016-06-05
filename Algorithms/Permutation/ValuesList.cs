@@ -23,7 +23,12 @@ namespace Algorithms.Permutation
         /// <summary>
         /// All permutations possible calculated
         /// </summary>
-        public bool ProcessingDone { get; set; }
+        public bool ProcessingDone
+        { 
+            get { return doneProcessing; }
+            set { doneProcessing = value; }
+        }
+        private bool doneProcessing = false;
 
         /// <summary>
         /// Counter on display
@@ -54,177 +59,95 @@ namespace Algorithms.Permutation
 
             Init(input);
         }
-
-        //TODO - refactor
+        
         public void SetNextOperation()
         {
-            if (ValuesOperationList[ValuesOperationList.Count - 1] == 0)
+            if (Utilities.ExecuteCommand(ValuesOperationList, 1))
             {
                 Operation = ListOperations.FLIP_LAST_TWO_LIST_MEMBERS;
                 ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 1);
             }
-
-            else if (ValuesOperationList[ValuesOperationList.Count - 1] == 1
-                && ValuesOperationList[ValuesOperationList.Count - 2] < 2)
+            
+            else if (Utilities.ExecuteCommand(ValuesOperationList, 2))
             {
-                if (Values.Count < ListOperationIndexes.INCREMENT_POSITION_TWO_INDEX)
-                {
-                    this.ProcessingDone = true;
-                }
-                else
+                if (!Utilities.ProcessingDone(Values, 3, out doneProcessing))
                 {
                     Operation = ListOperations.INCREMENT_POSITION_TWO_REPEAT_SUB_OPERATIONS;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 2);
                 }
             }
-
-            else if (ValuesOperationList[ValuesOperationList.Count - 1] == 1
-                && ValuesOperationList[ValuesOperationList.Count - 2] == 2
-                && ValuesOperationList[ValuesOperationList.Count - 3] < 3)
+            
+            else if (Utilities.ExecuteCommand(ValuesOperationList, 3))
             {
-                if (Values.Count < ListOperationIndexes.INCREMENT_POSITION_THREE_INDEX)
-                {
-                    this.ProcessingDone = true;
-                }
-                else
+                if (!Utilities.ProcessingDone(Values, 4, out doneProcessing))                
                 {
                     Operation = ListOperations.INCREMENT_POSITION_THREE_REPEAT_SUB_OPERATIONS;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 3);
                 }
             }
-
-            else if (ValuesOperationList[ValuesOperationList.Count - 1] == 1
-                && ValuesOperationList[ValuesOperationList.Count - 2] == 2
-                && ValuesOperationList[ValuesOperationList.Count - 3] == 3
-                && ValuesOperationList[ValuesOperationList.Count - 4] < 4)
+            
+            else if (Utilities.ExecuteCommand(ValuesOperationList, 4))
             {
-                if (Values.Count < ListOperationIndexes.INCREMENT_POSITION_FOUR_INDEX)
-                {
-                    this.ProcessingDone = true;
-                }
-                else
+                if (!Utilities.ProcessingDone(Values, 5, out doneProcessing))
                 {
                     Operation = ListOperations.INCREMENT_POSITION_FOUR_REPEAT_SUB_OPERATIONS;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 4);
                 }
             }
 
-            else if (ValuesOperationList[ValuesOperationList.Count - 1] == 1
-                && ValuesOperationList[ValuesOperationList.Count - 2] == 2
-                && ValuesOperationList[ValuesOperationList.Count - 3] == 3
-                && ValuesOperationList[ValuesOperationList.Count - 4] == 4
-                && ValuesOperationList[ValuesOperationList.Count - 5] < 5)
+            else if (Utilities.ExecuteCommand(ValuesOperationList, 5))
             {
-                if (Values.Count < ListOperationIndexes.INCREMENT_POSITION_FIVE_INDEX)
-                {
-                    this.ProcessingDone = true;
-                }
-                else
+                if (!Utilities.ProcessingDone(Values, 6, out doneProcessing))
                 {
                     Operation = ListOperations.INCREMENT_POSITION_FIVE_REPEAT_SUB_OPERATIONS;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 5);
                 }
             }
 
-            else if (ValuesOperationList[ValuesOperationList.Count - 1] == 1
-                && ValuesOperationList[ValuesOperationList.Count - 2] == 2
-                && ValuesOperationList[ValuesOperationList.Count - 3] == 3
-                && ValuesOperationList[ValuesOperationList.Count - 4] == 4
-                && ValuesOperationList[ValuesOperationList.Count - 5] == 5
-                && ValuesOperationList[ValuesOperationList.Count - 6] < 6)
+            else if (Utilities.ExecuteCommand(ValuesOperationList, 6))
             {
-                if (Values.Count < ListOperationIndexes.INCREMENT_POSITION_SIX_INDEX)
-                {
-                    this.ProcessingDone = true;
-                }
-                else
+                if (!Utilities.ProcessingDone(Values, 7, out doneProcessing))
                 {
                     Operation = ListOperations.INCREMENT_POSITION_SIX_REPEAT_SUB_OPERATIONS;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 6);
                 }
             }
 
-            else if (ValuesOperationList[ValuesOperationList.Count - 1] == 1
-                && ValuesOperationList[ValuesOperationList.Count - 2] == 2
-                && ValuesOperationList[ValuesOperationList.Count - 3] == 3
-                && ValuesOperationList[ValuesOperationList.Count - 4] == 4
-                && ValuesOperationList[ValuesOperationList.Count - 5] == 5
-                && ValuesOperationList[ValuesOperationList.Count - 6] == 6
-                && ValuesOperationList[ValuesOperationList.Count - 7] < 7)
+            else if (Utilities.ExecuteCommand(ValuesOperationList, 7))
             {
-                if (Values.Count < ListOperationIndexes.INCREMENT_POSITION_SEVEN_INDEX)
-                {
-                    this.ProcessingDone = true;
-                }
-                else
+                if (!Utilities.ProcessingDone(Values, 8, out doneProcessing))
                 {
                     Operation = ListOperations.INCREMENT_POSITION_SEVEN_REPEAT_SUB_OPERATIONS;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 7);
                 }
             }
 
-            else if (ValuesOperationList[ValuesOperationList.Count - 1] == 1
-                && ValuesOperationList[ValuesOperationList.Count - 2] == 2
-                && ValuesOperationList[ValuesOperationList.Count - 3] == 3
-                && ValuesOperationList[ValuesOperationList.Count - 4] == 4
-                && ValuesOperationList[ValuesOperationList.Count - 5] == 5
-                && ValuesOperationList[ValuesOperationList.Count - 6] == 6
-                && ValuesOperationList[ValuesOperationList.Count - 7] == 7
-                && ValuesOperationList[ValuesOperationList.Count - 8] < 8)
+            else if (Utilities.ExecuteCommand(ValuesOperationList, 8))
             {
-                if (Values.Count < ListOperationIndexes.INCREMENT_POSITION_EIGHT_INDEX)
-                {
-                    this.ProcessingDone = true;
-                }
-                else
+                if (!Utilities.ProcessingDone(Values, 9, out doneProcessing))
                 {
                     Operation = ListOperations.INCREMENT_POSITION_EIGHT_REPEAT_SUB_OPERATIONS;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 8);
                 }
             }
 
-            else if (ValuesOperationList[ValuesOperationList.Count - 1] == 1
-                && ValuesOperationList[ValuesOperationList.Count - 2] == 2
-                && ValuesOperationList[ValuesOperationList.Count - 3] == 3
-                && ValuesOperationList[ValuesOperationList.Count - 4] == 4
-                && ValuesOperationList[ValuesOperationList.Count - 5] == 5
-                && ValuesOperationList[ValuesOperationList.Count - 6] == 6
-                && ValuesOperationList[ValuesOperationList.Count - 7] == 7
-                && ValuesOperationList[ValuesOperationList.Count - 8] == 8
-                && ValuesOperationList[ValuesOperationList.Count - 9] < 9)
+            else if (Utilities.ExecuteCommand(ValuesOperationList, 9))
             {
-                if (Values.Count < ListOperationIndexes.INCREMENT_POSITION_NINE_INDEX)
-                {
-                    this.ProcessingDone = true;
-                }
-                else
+                if (!Utilities.ProcessingDone(Values, 10, out doneProcessing))
                 {
                     Operation = ListOperations.INCREMENT_POSITION_NINE_REPEAT_SUB_OPERATIONS;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 9);
                 }
             }
-            else if (ValuesOperationList[ValuesOperationList.Count - 1] == 1
-              && ValuesOperationList[ValuesOperationList.Count - 2] == 2
-              && ValuesOperationList[ValuesOperationList.Count - 3] == 3
-              && ValuesOperationList[ValuesOperationList.Count - 4] == 4
-              && ValuesOperationList[ValuesOperationList.Count - 5] == 5
-              && ValuesOperationList[ValuesOperationList.Count - 6] == 6
-              && ValuesOperationList[ValuesOperationList.Count - 7] == 7
-              && ValuesOperationList[ValuesOperationList.Count - 8] == 8
-              && ValuesOperationList[ValuesOperationList.Count - 9] == 9
-              && ValuesOperationList[ValuesOperationList.Count - 10] < 10)
+
+            else if (Utilities.ExecuteCommand(ValuesOperationList,  10))
             {
-                if (Values.Count < ListOperationIndexes.INCREMENT_POSITION_TEN_INDEX)
-                {
-                    this.ProcessingDone = true;
-                }
-                else
+                if (!Utilities.ProcessingDone(Values, 11, out doneProcessing))
                 {
                     Operation = ListOperations.INCREMENT_POSITION_TEN_REPEAT_SUB_OPERATIONS;
                     ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 10);
                 }
             }
-
         }
         public void Display(bool showDisplay, bool omitNumbering = false)
         {
