@@ -42,16 +42,13 @@
     <Compile Include="Genetic\Algorithm.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Permutation\Algorithm.cs" />
-    <Compile Include="Permutation\Utilities.cs" />
+    <Compile Include="Utilities.cs" />
     <Compile Include="Permutation\ValuesList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TravelingSalesman\Algorithmv2.cs" />
     <Compile Include="TravelingSalesman\Algorithm.cs" />
-    <Compile Include="TravelingSalesman\Cityv2.cs" />
     <Compile Include="TravelingSalesman\City.cs" />
     <Compile Include="TravelingSalesman\CityDistance.cs" />
     <Compile Include="TravelingSalesman\Enumerations.cs" />
-    <Compile Include="TravelingSalesman\Utilities.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

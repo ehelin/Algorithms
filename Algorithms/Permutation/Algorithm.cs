@@ -6,6 +6,7 @@ namespace Algorithms.Permutation
     public class Algorithm
     {
         private ValuesList valuesList;
+        private List<string> permutations;
         private long endCnt = 0;
         private bool showDisplay = false;
 
@@ -13,6 +14,7 @@ namespace Algorithms.Permutation
         {
             this.valuesList = new ValuesList(input);
             this.showDisplay = showDisplay;
+            this.permutations = new List<string>();
         }
         
         public void Run()
@@ -34,6 +36,12 @@ namespace Algorithms.Permutation
 
             return result;
         }
+        public List<string> RunReturnAllPermutations()
+        {
+            RunPermutation();
+
+            return this.permutations;
+        }
 
         private string RunPermutation()
         {
@@ -43,8 +51,9 @@ namespace Algorithms.Permutation
             while (valuesList.DisplayCtr < endCnt)
             {
                 valuesList.Display(showDisplay);
-                valuesList.SetNextOperation();
+                this.permutations.Add(valuesList.GetLastDisplay());
 
+                valuesList.SetNextOperation();
                 valuesList = PerformListOperation(valuesList);
             }
 

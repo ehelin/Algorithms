@@ -9,27 +9,28 @@ namespace Algorithms
     {
         public void Run()
         {
-            RunTmp("3,2,1");
-            //RunTmp("6,7,1,10,4,5,9,3,2,8");
-
-            //RunTravelingSalesman();
+            //RunPermutation("6,7,1,10,4,5,9,3,2,8");
+            RunTravelingSalesman();
             //RunGeneticAlgorithm();
 
             Console.Read();
         }
 
-        private void RunTmp(string characters)
+        private void RunPermutation(string characters)
         {
-            Permutation.Algorithm a = new Permutation.Algorithm(characters, true);
-            a.Run();
+            Console.WriteLine("Starting permutation for " + characters + " - " + DateTime.Now.ToString());
+
+            Permutation.Algorithm a = new Permutation.Algorithm(characters, false);
+            List<string> permutations = a.RunReturnAllPermutations();
+
+            Console.WriteLine("Done with permutation for " + characters + " - " + DateTime.Now.ToString());
+            Console.WriteLine("Total permutations: " + permutations.Count.ToString());
         }
         
         private void RunTravelingSalesman()
         {
-            //TravelingSalesman.Algorithm travelingSalesMan = new TravelingSalesman.Algorithm(20, 20, GetCities());
-            //travelingSalesMan.RunExample();
-            //TravelingSalesman.Algorithmv2 travelingSalesMan = new TravelingSalesman.Algorithmv2(20, 20, GetCities());
-            //travelingSalesMan.RunExample();
+            TravelingSalesman.Algorithm travelingSalesMan = new TravelingSalesman.Algorithm(20, 20, Utilities.GetCities());
+            travelingSalesMan.RunExample();
         }
 
         private void RunGeneticAlgorithm()

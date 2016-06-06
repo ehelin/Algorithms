@@ -8,24 +8,32 @@ namespace Algorithms.TravelingSalesman
         public string Name { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
+        public int NumberId { get; set; }
         public bool AddedToGrid { get; set; }
         public Dictionary<City, CityDistance> cityDistances;
         public Dictionary<string, Dictionary<string, int>> startingCityTotalDistances;
         public Dictionary<string, int> cityTotalDistances;
 
-        public City(string Name, int X, int Y)
+        private string cityIds;
+        private List<City> otherCities;
+        private List<string> cityPermutations; 
+
+        public City(string Name, int X, int Y, int numberId)
         {
             this.Name = Name;
             this.X = X;
             this.Y = Y;
+            this.NumberId = numberId;
+
             cityDistances = new Dictionary<City, CityDistance>();
             startingCityTotalDistances = new Dictionary<string, Dictionary<string, int>>();
             cityTotalDistances = new Dictionary<string, int>();
+            otherCities = new List<City>();
         }
 
         public City Clone()
         {
-            City newCity = new City(this.Name, this.X, this.Y);
+            City newCity = new City(this.Name, this.X, this.Y, this.NumberId);
             newCity.AddedToGrid = this.AddedToGrid;
 
             foreach (var cityDistance in cityDistances)
@@ -199,9 +207,33 @@ namespace Algorithms.TravelingSalesman
         //y is 0, we are going left or right
         //x/y different and don't match, complicated move
 
+        private void AddOtherCities(List<City> cities)
+        {
+            foreach (City city in cities)
+            {
+                if (!this.Name.Equals(city.Name))
+                {
+                    this.otherCities.Add(city);
+                    this.cityIds += city.NumberId.ToString() + ",";
+                }
+            }
+
+            this.cityIds = this.cityIds.Trim(',');
+        }
+
+
         //Calculate all paths from this city to the others and record approach
         public void CalculateAllPaths(List<City> cities)
         {
+            AddOtherCities(cities);
+            Permutation.Algorithm a = new Permutation.Algorithm(this.cityIds, false);
+            this.cityPermutations = a.RunReturnAllPermutations();
+
+            foreach (string cityPermutation in cityPermutations)
+            {
+
+            }
+
             foreach (City otherCity in cities)
             {
                 if (this.Name.Equals(otherCity.Name))
