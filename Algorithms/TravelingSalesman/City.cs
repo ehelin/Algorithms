@@ -12,6 +12,7 @@ namespace Algorithms.TravelingSalesman
         public bool AddedToGrid { get; set; }
         public Dictionary<City, CityDistance> cityDistances;
         public Dictionary<string, Dictionary<string, int>> startingCityTotalDistances;
+        public List<Dictionary<string, Dictionary<string, int>>> possibleRoutes;
         public Dictionary<string, int> cityTotalDistances;
 
         private string cityIds;
@@ -29,7 +30,8 @@ namespace Algorithms.TravelingSalesman
             startingCityTotalDistances = new Dictionary<string, Dictionary<string, int>>();
             cityTotalDistances = new Dictionary<string, int>();
             otherCities = new List<City>();
-        }
+            possibleRoutes = new List<Dictionary<string, Dictionary<string, int>>>();
+    }
 
         public City Clone()
         {
@@ -69,68 +71,73 @@ namespace Algorithms.TravelingSalesman
 
         #region Calculate Best Path
 
+
+
         //Calculate the least cost path to visit all other cities fromt this city
         public void CalculateBestPath()
         {
-            Dictionary<City, bool> cityBools = GetCityList();
-            int maxIterations = this.cityDistances.Count;
-            int iterationCtr = 0;
-
-            while (iterationCtr < maxIterations)
+            long operationCtr = 1;
+            foreach (string cityPermutation in this.cityPermutations)
             {
-                Dictionary<string, int> individualCityDistances = new Dictionary<string, int>();
-                List<string> curStartCityDistanceCities = new List<string>();
-                City curStartCity = GetNextCityToStart(cityBools);
-                City startCity = curStartCity.Clone();
+                Dictionary<City, bool> cityBools = GetCityList(cityPermutation);
+                int maxIterations = this.cityDistances.Count;
+                int iterationCtr = 0;
 
-                individualCityDistances.Add(this.Name, this.GetDistance(curStartCity));
-                //individualCityDistances.Add(curStartCity.Name, this.GetDistance(curStartCity));
-                //int totalDistanceForThisStartCity = this.GetDistance(curStartCity);
-
-                if (curStartCity == null)
-                    break;
-
-                foreach (KeyValuePair<City, CityDistance> cityDistance in cityDistances)
+                while (iterationCtr < maxIterations)
                 {
-                    bool cityAlreadyProcessed = false;
-                    City curCity = cityDistance.Key;
-                    if (curCity.Name.Equals(curStartCity.Name))
-                        continue;
+                    Dictionary<string, int> individualCityDistances = new Dictionary<string, int>();
+                    List<string> curStartCityDistanceCities = new List<string>();
+                    City curStartCity = GetNextCityToStart(cityBools);
+                    City startCity = curStartCity.Clone();
 
-                    if (curCity.Name.Equals(startCity.Name))
-                        continue;
+                    individualCityDistances.Add(this.Name, this.GetDistance(curStartCity));
+                    //individualCityDistances.Add(curStartCity.Name, this.GetDistance(curStartCity));
+                    //int totalDistanceForThisStartCity = this.GetDistance(curStartCity);
 
-                    foreach (string city in curStartCityDistanceCities)
+                    if (curStartCity == null)
+                        break;
+
+                    foreach (KeyValuePair<City, CityDistance> cityDistance in cityDistances)
                     {
-                        if (curCity.Name.Equals(city))
+                        bool cityAlreadyProcessed = false;
+                        City curCity = cityDistance.Key;
+                        if (curCity.Name.Equals(curStartCity.Name))
+                            continue;
+
+                        if (curCity.Name.Equals(startCity.Name))
+                            continue;
+
+                        foreach (string city in curStartCityDistanceCities)
                         {
-                            cityAlreadyProcessed = true;
-                            break;
+                            if (curCity.Name.Equals(city))
+                            {
+                                cityAlreadyProcessed = true;
+                                break;
+                            }
                         }
+
+                        if (cityAlreadyProcessed)
+                            continue;
+
+                        //int distanceFromCityToCity = curStartCity.GetDistance(curCity);
+
+                        individualCityDistances.Add(curStartCity.Name, this.GetDistance(curCity));
+                        //individualCityDistances.Add(curCity.Name, this.GetDistance(curCity));
+                        //totalDistanceForThisStartCity += distanceFromCityToCity;
+
+                        curStartCityDistanceCities.Add(curCity.Name);
+                        curStartCity = curCity;
                     }
 
-                    if (cityAlreadyProcessed)
-                        continue;
+                    //totalDistanceForThisStartCity += curStartCity.GetDistance(this);  //get the distance from last city back to original
 
-                    //int distanceFromCityToCity = curStartCity.GetDistance(curCity);
-
-                    individualCityDistances.Add(curStartCity.Name, this.GetDistance(curCity));
-                    //individualCityDistances.Add(curCity.Name, this.GetDistance(curCity));
-                    //totalDistanceForThisStartCity += distanceFromCityToCity;
-
-                    curStartCityDistanceCities.Add(curCity.Name);
-                    curStartCity = curCity;
+                    individualCityDistances.Add(curStartCity.Name, curStartCity.GetDistance(this));
+                    startingCityTotalDistances.Add(startCity.Name + "-" + operationCtr.ToString(), individualCityDistances);
+                    
+                    SetCityIterationRun(startCity, cityBools);
+                    iterationCtr++;
+                    operationCtr++;
                 }
-
-                //totalDistanceForThisStartCity += curStartCity.GetDistance(this);  //get the distance from last city back to original
-
-                individualCityDistances.Add(curStartCity.Name, curStartCity.GetDistance(this));
-                //individualCityDistances.Add(this.Name, curStartCity.GetDistance(this));
-                //startingCityTotalDistances.Add(startCity.Name, totalDistanceForThisStartCity);
-                startingCityTotalDistances.Add(startCity.Name, individualCityDistances);
-
-                SetCityIterationRun(startCity, cityBools);
-                iterationCtr++;
             }
 
             TotalIndividualCityDistances();
@@ -138,16 +145,16 @@ namespace Algorithms.TravelingSalesman
 
         private void TotalIndividualCityDistances()
         {
-            foreach (var startingCityTotalDistances in this.startingCityTotalDistances)
+            foreach (var startingCityTotalDistance in this.startingCityTotalDistances)
             {
                 int totalDistance = 0;
 
-                foreach (var city in startingCityTotalDistances.Value)
+                foreach (var city in startingCityTotalDistance.Value)
                 {
                     totalDistance += city.Value; 
                 }
 
-                this.cityTotalDistances.Add(startingCityTotalDistances.Key, totalDistance);
+                this.cityTotalDistances.Add(startingCityTotalDistance.Key, totalDistance);
             }
         }
 
@@ -185,14 +192,21 @@ namespace Algorithms.TravelingSalesman
             return cityToStart;
         }
 
-        private Dictionary<City, bool> GetCityList()
+        private Dictionary<City, bool> GetCityList(string cityPermutation)
         {
             Dictionary<City, bool> cities = new Dictionary<City, bool>();
+            string[] curCityPermutation = cityPermutation.Split('-');
 
-            foreach (KeyValuePair<City, CityDistance> cityDistance in cityDistances)
+            foreach (string cityPerm in curCityPermutation)
             {
-                City curCity = (City)cityDistance.Key;
-                cities.Add(curCity, false);
+                foreach (City city in otherCities)
+                {
+                    if (city.NumberId.ToString() == cityPerm)
+                    {
+                        cities.Add(city, false);
+                        break;
+                    }
+                }
             }
 
             return cities;
@@ -200,45 +214,16 @@ namespace Algorithms.TravelingSalesman
 
         #endregion
 
-        #region Calculate All Paths
-
-        //x/y different, but same number - diagonal move
-        //x is 0, we are going up or down
-        //y is 0, we are going left or right
-        //x/y different and don't match, complicated move
-
-        private void AddOtherCities(List<City> cities)
-        {
-            foreach (City city in cities)
-            {
-                if (!this.Name.Equals(city.Name))
-                {
-                    this.otherCities.Add(city);
-                    this.cityIds += city.NumberId.ToString() + ",";
-                }
-            }
-
-            this.cityIds = this.cityIds.Trim(',');
-        }
-
-
-        //Calculate all paths from this city to the others and record approach
-        public void CalculateAllPaths(List<City> cities)
+        #region Add other cities/get permutations
+        
+        public void AddOtherCitysAndPermutationsDistances(List<City> cities)
         {
             AddOtherCities(cities);
             Permutation.Algorithm a = new Permutation.Algorithm(this.cityIds, false);
             this.cityPermutations = a.RunReturnAllPermutations();
-
-            foreach (string cityPermutation in cityPermutations)
+            
+            foreach (City otherCity in otherCities)
             {
-
-            }
-
-            foreach (City otherCity in cities)
-            {
-                if (this.Name.Equals(otherCity.Name))
-                    continue;
-
                 CityDistance distance = DetermineDirection(otherCity);
                 this.cityDistances.Add(otherCity, distance);
             }
@@ -261,7 +246,7 @@ namespace Algorithms.TravelingSalesman
             {
                 if (yDiffCompare == distance.YDiff && xDiffCompare == distance.XDiff)
                     break;
-                                
+
                 //W
                 if (distance.XDiff > 0 && (distance.YDiff == yDiffCompare))
                 {
@@ -321,6 +306,19 @@ namespace Algorithms.TravelingSalesman
             }
 
             return distance;
+        }
+        private void AddOtherCities(List<City> cities)
+        {
+            foreach (City city in cities)
+            {
+                if (!this.Name.Equals(city.Name))
+                {
+                    this.otherCities.Add(city);
+                    this.cityIds += city.NumberId.ToString() + ",";
+                }
+            }
+
+            this.cityIds = this.cityIds.Trim(',');
         }
 
         #endregion
