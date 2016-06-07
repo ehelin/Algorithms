@@ -21,23 +21,30 @@ namespace Algorithms.TravelingSalesman
 
         public void RunExample()
         {
-            Console.WriteLine("Starting Traveling Salesman");
-
-            Utilities.DisplayGrid(grid);
+            InitMessage();
 
             Run();
 
-            //DisplayGrid();
-
-            Console.WriteLine("Traveling Salesman Complete!");
+            Utilities.DisplayGrid(grid);
+            
+            Console.WriteLine("Traveling Salesman Complete! " + DateTime.Now.ToString());
         }
         
         private void Run()
         {
             FindBestRouteForEach();
+            DisplayLowestPathResults();
         }
 
         #region private methods
+
+        private void DisplayLowestPathResults()
+        {
+            foreach (City city in cities)
+            {
+                Console.WriteLine(city.Name + " - Lowest cost path is " + city.GetLowestPathCost());
+            }
+        }
 
         //TODO - replace this method with a Contains linq statement
         private City PopulateCity(int X, int Y)
@@ -79,17 +86,29 @@ namespace Algorithms.TravelingSalesman
         }
         private void FindBestRouteForEach()
         {
+            Console.WriteLine("Creating each city with list of cities, permutations and distances...");
             foreach (City city in cities)
             {
                 city.AddOtherCitysAndPermutationsDistances(cities);
             }
+            Console.WriteLine("Done with city preliminary calculations!");
 
+            Console.WriteLine("Calculating the lowest cost path for each city...");
             foreach (City city in cities)
             {
                 city.CalculateBestPath();
             }
+            Console.WriteLine("Done with city lowest cost path calculations!");
+        }
+        private void InitMessage()
+        {
+            Console.WriteLine("Starting Traveling Salesman - " + DateTime.Now.ToString());
+            Console.WriteLine("There are " + cities.Count + " cities in a " + grid.GetLength(0).ToString() + " by " + grid.GetLength(1).ToString() + " grid");
 
-            City tmpCity = cities[0];
+            foreach (City city in cities)
+            {
+                Console.WriteLine(city.ToString());
+            }
         }
 
         #endregion

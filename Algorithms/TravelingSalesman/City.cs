@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Algorithms.TravelingSalesman
@@ -11,28 +11,34 @@ namespace Algorithms.TravelingSalesman
         public int NumberId { get; set; }
         public bool AddedToGrid { get; set; }
         public Dictionary<City, CityDistance> cityDistances;
-        public Dictionary<string, Dictionary<string, int>> startingCityTotalDistances;
-        public List<Dictionary<string, Dictionary<string, int>>> possibleRoutes;
-        public Dictionary<string, int> cityTotalDistances;
+        //public Dictionary<string, Dictionary<string, int>> startingCityTotalDistances;
+        //public List<Dictionary<string, Dictionary<string, int>>> possibleRoutes;
+        //public Dictionary<string, int> cityTotalDistances;
 
         private string cityIds;
         private List<City> otherCities;
-        private List<string> cityPermutations; 
+        private List<string> cityPermutations;
+        private string lowestCostPermutation = string.Empty;
+        private int lowestDistance = 0;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <param name="numberId"></param>
         public City(string Name, int X, int Y, int numberId)
         {
             this.Name = Name;
             this.X = X;
             this.Y = Y;
             this.NumberId = numberId;
-
             cityDistances = new Dictionary<City, CityDistance>();
-            startingCityTotalDistances = new Dictionary<string, Dictionary<string, int>>();
-            cityTotalDistances = new Dictionary<string, int>();
             otherCities = new List<City>();
-            possibleRoutes = new List<Dictionary<string, Dictionary<string, int>>>();
-    }
-
+            cityPermutations = new List<string>();
+    }   
+        
         public City Clone()
         {
             City newCity = new City(this.Name, this.X, this.Y, this.NumberId);
@@ -45,14 +51,18 @@ namespace Algorithms.TravelingSalesman
 
             return newCity;
         }
-
         public override string ToString()
         {
-            string result = "Name: " + this.Name + ", X: " + this.X.ToString() + ", this.Y: " + Y.ToString();
+            string result = "Name: " + this.Name + ", X: " + this.X.ToString() + ", Y: " + Y.ToString();
 
             return result;
         }
+        public string GetLowestPathCost()
+        {
+            string lowestCostPath = this.lowestCostPermutation + ", distance: " + this.lowestDistance.ToString();
 
+            return lowestCostPath;
+        }
         public int GetDistance(City destinationCity)
         {
             int steps = 0;
@@ -74,6 +84,8 @@ namespace Algorithms.TravelingSalesman
         //Calculate the least cost path to visit all other cities fromt this city
         public void CalculateBestPath()
         {
+            Dictionary<string, Dictionary<string, int>>  startingCityTotalDistances = new Dictionary<string, Dictionary<string, int>>();
+            
             foreach (string cityPermutation in this.cityPermutations)
             {
                 Dictionary<City, bool> cityBools = GetCityList(cityPermutation);
@@ -103,15 +115,14 @@ namespace Algorithms.TravelingSalesman
                 startingCityTotalDistances.Add(cityPermutation, individualCityDistances);
             }
 
-            TotalIndividualCityDistancesSetBest();
+            //find lowest route
+            TotalIndividualCityDistancesSetBest(startingCityTotalDistances);
         }
 
-        private string lowestCostPermutation = string.Empty;
-        private void TotalIndividualCityDistancesSetBest()
+        private void TotalIndividualCityDistancesSetBest(Dictionary<string, Dictionary<string, int>> startingCityTotalDistances)
         {
-            int lowestDistance = 0;
-
-            foreach (var startingCityTotalDistance in this.startingCityTotalDistances)
+            Console.WriteLine(this.Name + " permutations: " + startingCityTotalDistances.Count);
+            foreach (var startingCityTotalDistance in startingCityTotalDistances)
             {
                 int totalDistance = 0;
 
@@ -120,13 +131,14 @@ namespace Algorithms.TravelingSalesman
                     totalDistance += city.Value; 
                 }
 
+
                 if (totalDistance < lowestDistance || lowestDistance == 0)
                 {
+                    Console.WriteLine("New Lowest: " + this.Name + ", " + startingCityTotalDistance.Key + " distance: " + totalDistance.ToString());
+
                     lowestDistance = totalDistance;
                     lowestCostPermutation = startingCityTotalDistance.Key;
                 }
-
-                this.cityTotalDistances.Add(startingCityTotalDistance.Key, totalDistance);
             }
         }
      
