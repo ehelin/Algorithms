@@ -59,7 +59,7 @@ namespace Algorithms.TravelingSalesman
 
             foreach (KeyValuePair<City, CityDistance> cityDistance in cityDistances)
             {
-                if (cityDistance.Key.Equals(destinationCity))
+                if (cityDistance.Key.Name.Equals(destinationCity.Name))
                 {
                     steps = cityDistance.Value.TravelDirections.Count;
                     break;
@@ -71,80 +71,46 @@ namespace Algorithms.TravelingSalesman
 
         #region Calculate Best Path
 
-
-
         //Calculate the least cost path to visit all other cities fromt this city
         public void CalculateBestPath()
         {
-            long operationCtr = 1;
             foreach (string cityPermutation in this.cityPermutations)
             {
                 Dictionary<City, bool> cityBools = GetCityList(cityPermutation);
-                int maxIterations = this.cityDistances.Count;
-                int iterationCtr = 0;
+                City lastCity = null;
 
-                while (iterationCtr < maxIterations)
+                //put this city as start city to the first one in the permutation
+                Dictionary<string, int> individualCityDistances = new Dictionary<string, int>();
+                List<string> curStartCityDistanceCities = new List<string>();
+                City startCity = this.Clone();
+
+                //link each city together in the permutation
+                foreach (KeyValuePair<City, bool> cityBool in cityBools)
                 {
-                    Dictionary<string, int> individualCityDistances = new Dictionary<string, int>();
-                    List<string> curStartCityDistanceCities = new List<string>();
-                    City curStartCity = GetNextCityToStart(cityBools);
-                    City startCity = curStartCity.Clone();
+                    City curStartCity = (City) cityBool.Key;
+                    lastCity = curStartCity.Clone();
 
-                    individualCityDistances.Add(this.Name, this.GetDistance(curStartCity));
-                    //individualCityDistances.Add(curStartCity.Name, this.GetDistance(curStartCity));
-                    //int totalDistanceForThisStartCity = this.GetDistance(curStartCity);
+                    individualCityDistances.Add(startCity.Name, startCity.GetDistance(curStartCity));
 
-                    if (curStartCity == null)
-                        break;
-
-                    foreach (KeyValuePair<City, CityDistance> cityDistance in cityDistances)
-                    {
-                        bool cityAlreadyProcessed = false;
-                        City curCity = cityDistance.Key;
-                        if (curCity.Name.Equals(curStartCity.Name))
-                            continue;
-
-                        if (curCity.Name.Equals(startCity.Name))
-                            continue;
-
-                        foreach (string city in curStartCityDistanceCities)
-                        {
-                            if (curCity.Name.Equals(city))
-                            {
-                                cityAlreadyProcessed = true;
-                                break;
-                            }
-                        }
-
-                        if (cityAlreadyProcessed)
-                            continue;
-
-                        //int distanceFromCityToCity = curStartCity.GetDistance(curCity);
-
-                        individualCityDistances.Add(curStartCity.Name, this.GetDistance(curCity));
-                        //individualCityDistances.Add(curCity.Name, this.GetDistance(curCity));
-                        //totalDistanceForThisStartCity += distanceFromCityToCity;
-
-                        curStartCityDistanceCities.Add(curCity.Name);
-                        curStartCity = curCity;
-                    }
-
-                    //totalDistanceForThisStartCity += curStartCity.GetDistance(this);  //get the distance from last city back to original
-
-                    individualCityDistances.Add(curStartCity.Name, curStartCity.GetDistance(this));
-                    startingCityTotalDistances.Add(startCity.Name + "-" + operationCtr.ToString(), individualCityDistances);
-                    
-                    SetCityIterationRun(startCity, cityBools);
-                    iterationCtr++;
-                    operationCtr++;
+                    startCity = curStartCity.Clone();
                 }
+
+                //link last city in permutation to this city
+                City endCity = this.Clone();
+                individualCityDistances.Add(startCity.Name, startCity.GetDistance(this));
+
+                //store
+                startingCityTotalDistances.Add(cityPermutation, individualCityDistances);
             }
 
-            TotalIndividualCityDistances();
+            TotalIndividualCityDistancesSetBest();
         }
 
-        private void TotalIndividualCityDistances()
+        private string lowestCostPermutation = string.Empty;
+        private void TotalIndividualCityDistancesSetBest()
         {
+            int lowestDistance = 0;
+
             foreach (var startingCityTotalDistance in this.startingCityTotalDistances)
             {
                 int totalDistance = 0;
@@ -154,44 +120,16 @@ namespace Algorithms.TravelingSalesman
                     totalDistance += city.Value; 
                 }
 
+                if (totalDistance < lowestDistance || lowestDistance == 0)
+                {
+                    lowestDistance = totalDistance;
+                    lowestCostPermutation = startingCityTotalDistance.Key;
+                }
+
                 this.cityTotalDistances.Add(startingCityTotalDistance.Key, totalDistance);
             }
         }
-
-        //TODO - seems bassackwards...I want to update a city as having been run first...must be a better way :(
-        private void SetCityIterationRun(City city, Dictionary<City, bool> cityBools)
-        {
-            KeyValuePair<City, bool> curCityBool = new KeyValuePair<City, bool>();
-
-            foreach (KeyValuePair<City, bool> cityBool in cityBools)
-            {
-                if (city.Name.Equals(cityBool.Key.Name))
-                {
-                    curCityBool = cityBool;
-                    break;
-                }
-            }
-
-            cityBools.Remove(curCityBool.Key);            
-            cityBools.Add(curCityBool.Key, true);
-        }
-
-        private City GetNextCityToStart(Dictionary<City, bool> cityBools)
-        {
-            City cityToStart = null;
-
-            foreach (KeyValuePair<City, bool> cityBool in cityBools)
-            {
-                if (cityBool.Value == false)
-                {
-                    cityToStart = (City)cityBool.Key;
-                    break;
-                }
-            }
-
-            return cityToStart;
-        }
-
+     
         private Dictionary<City, bool> GetCityList(string cityPermutation)
         {
             Dictionary<City, bool> cities = new Dictionary<City, bool>();

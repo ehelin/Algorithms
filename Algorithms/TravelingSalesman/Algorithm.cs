@@ -82,6 +82,10 @@ namespace Algorithms.TravelingSalesman
             foreach (City city in cities)
             {
                 city.AddOtherCitysAndPermutationsDistances(cities);
+            }
+
+            foreach (City city in cities)
+            {
                 city.CalculateBestPath();
             }
 
