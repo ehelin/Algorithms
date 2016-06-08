@@ -5,19 +5,46 @@ namespace Algorithms.TravelingSalesman
 {
     public class City
     {
+        /// <summary>
+        /// This city's name
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// 2 dimensional X/Y position
+        /// </summary>
         public int X { get; set; }
         public int Y { get; set; }
-        public int NumberId { get; set; }
-        public bool AddedToGrid { get; set; }
-        public Dictionary<City, CityDistance> cityDistances;
-        //public Dictionary<string, Dictionary<string, int>> startingCityTotalDistances;
-        //public List<Dictionary<string, Dictionary<string, int>>> possibleRoutes;
-        //public Dictionary<string, int> cityTotalDistances;
 
+        /// <summary>
+        /// Number id for a city (used in permutation algorithm)
+        /// </summary>
+        public int NumberId { get; set; }
+
+        /// <summary>
+        /// Added to the console grid (or not)
+        /// </summary>
+        public bool AddedToGrid { get; set; }
+
+        /// <summary>
+        /// List of cities and their distance from this distance
+        /// </summary>
+        public Dictionary<City, CityDistance> cityDistances;
+
+        /// <summary>
+        /// List of ids for permutation algorithm (i.e. other cities)
+        /// </summary>
         private string cityIds;
+
+        /// <summary>
+        /// List of other cities one can visit from this city
+        /// </summary>
         private List<City> otherCities;
         private List<string> cityPermutations;
+
+        /// <summary>
+        /// Lowest permutation and distance
+        /// </summary>
         private string lowestCostPermutation = string.Empty;
         private int lowestDistance = 0;
 
@@ -37,7 +64,7 @@ namespace Algorithms.TravelingSalesman
             cityDistances = new Dictionary<City, CityDistance>();
             otherCities = new List<City>();
             cityPermutations = new List<string>();
-    }   
+        }   
         
         public City Clone()
         {
@@ -86,6 +113,7 @@ namespace Algorithms.TravelingSalesman
         {
             Dictionary<string, Dictionary<string, int>>  startingCityTotalDistances = new Dictionary<string, Dictionary<string, int>>();
             
+            //for each city list, get the travel cost list and store
             foreach (string cityPermutation in this.cityPermutations)
             {
                 Dictionary<City, bool> cityBools = GetCityList(cityPermutation);
@@ -119,9 +147,12 @@ namespace Algorithms.TravelingSalesman
             TotalIndividualCityDistancesSetBest(startingCityTotalDistances);
         }
 
+        /// <summary>
+        /// Adds all of the cities in a specific visit list together and stores the lowsest cost route
+        /// </summary>
+        /// <param name="startingCityTotalDistances"></param>
         private void TotalIndividualCityDistancesSetBest(Dictionary<string, Dictionary<string, int>> startingCityTotalDistances)
         {
-            Console.WriteLine(this.Name + " permutations: " + startingCityTotalDistances.Count);
             foreach (var startingCityTotalDistance in startingCityTotalDistances)
             {
                 int totalDistance = 0;
@@ -131,11 +162,8 @@ namespace Algorithms.TravelingSalesman
                     totalDistance += city.Value; 
                 }
 
-
                 if (totalDistance < lowestDistance || lowestDistance == 0)
                 {
-                    Console.WriteLine("New Lowest: " + this.Name + ", " + startingCityTotalDistance.Key + " distance: " + totalDistance.ToString());
-
                     lowestDistance = totalDistance;
                     lowestCostPermutation = startingCityTotalDistance.Key;
                 }
@@ -165,7 +193,11 @@ namespace Algorithms.TravelingSalesman
         #endregion
 
         #region Add other cities/get permutations
-        
+
+        /// <summary>
+        /// Adds all of the 'other' cities a person could travel to from here, the distance and other bits of information
+        /// </summary>
+        /// <param name="cities"></param>
         public void AddOtherCitysAndPermutationsDistances(List<City> cities)
         {
             AddOtherCities(cities);
@@ -179,6 +211,11 @@ namespace Algorithms.TravelingSalesman
             }
         }
 
+        /// <summary>
+        /// Gets distance from 'this' city to the specified city
+        /// </summary>
+        /// <param name="otherCity"></param>
+        /// <returns></returns>
         private CityDistance DetermineDirection(City otherCity)
         {
             CityDistance distance = new CityDistance(this.X - otherCity.X, this.Y - otherCity.Y);
@@ -187,6 +224,13 @@ namespace Algorithms.TravelingSalesman
 
             return distance;
         }
+
+        /// <summary>
+        /// Return the 'steps' (i.e. NW, SW, etc.) in a 2 dimensional space from one city to another
+        /// </summary>
+        /// <param name="distance"></param>
+        /// <param name="otherCity"></param>
+        /// <returns></returns>
         private CityDistance GetSteps(CityDistance distance, City otherCity)
         {
             int xDiffCompare = 0;
@@ -257,6 +301,11 @@ namespace Algorithms.TravelingSalesman
 
             return distance;
         }
+
+        /// <summary>
+        /// Adds all other cities a person could travel to from here
+        /// </summary>
+        /// <param name="cities"></param>
         private void AddOtherCities(List<City> cities)
         {
             foreach (City city in cities)

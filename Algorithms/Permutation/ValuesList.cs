@@ -60,6 +60,7 @@ namespace Algorithms.Permutation
             Init(input);
         }
         
+        //TODO - refactor to handle more than just 10 characters
         public void SetNextOperation()
         {
             if (Utilities.ExecuteCommand(ValuesOperationList, 1))

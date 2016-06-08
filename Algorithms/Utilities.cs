@@ -41,8 +41,7 @@ namespace Algorithms
 
             return city;
         }
-
-
+        
         //TODO - replace this method with a Contains linq statement
         public static City PopulateCity(int X, int Y, List<City> cities)
         {

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Algorithms.TravelingSalesman;
-using Algorithms.Permutation;
 
 namespace Algorithms
 {
@@ -9,7 +7,7 @@ namespace Algorithms
     {
         public void Run()
         {
-            //RunPermutation("6,7,1,10,4,5,9,3,2,8");
+            //RunPermutation("6,7,1,10,4");
             RunTravelingSalesman();
             //RunGeneticAlgorithm();
 
@@ -20,7 +18,7 @@ namespace Algorithms
         {
             Console.WriteLine("Starting permutation for " + characters + " - " + DateTime.Now.ToString());
 
-            Permutation.Algorithm a = new Permutation.Algorithm(characters, false);
+            Permutation.Algorithm a = new Permutation.Algorithm(characters, true);
             List<string> permutations = a.RunReturnAllPermutations();
 
             Console.WriteLine("Done with permutation for " + characters + " - " + DateTime.Now.ToString());

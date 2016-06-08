@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Algorithms.TravelingSalesman
 {
     public class Algorithm
     {
+        /// <summary>
+        /// Two dimensional grid for the cities
+        /// </summary>
         private int[,] grid = null;
+
+        /// <summary>
+        /// List of cities on the grid
+        /// </summary>
         private List<City> cities = null;
 
         public Algorithm(int row, int col, List<City> cities)
@@ -42,7 +45,7 @@ namespace Algorithms.TravelingSalesman
         {
             foreach (City city in cities)
             {
-                Console.WriteLine(city.Name + " - Lowest cost path is " + city.GetLowestPathCost());
+                Console.WriteLine(city.Name + "(" + city.X.ToString() + "/" + city.Y.ToString() + ") - Lowest cost path is " + city.GetLowestPathCost());
             }
         }
 
@@ -104,11 +107,6 @@ namespace Algorithms.TravelingSalesman
         {
             Console.WriteLine("Starting Traveling Salesman - " + DateTime.Now.ToString());
             Console.WriteLine("There are " + cities.Count + " cities in a " + grid.GetLength(0).ToString() + " by " + grid.GetLength(1).ToString() + " grid");
-
-            foreach (City city in cities)
-            {
-                Console.WriteLine(city.ToString());
-            }
         }
 
         #endregion

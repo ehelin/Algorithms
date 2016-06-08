@@ -1,5 +1,4 @@
-﻿using System;
-using Algorithms.Permutation;
+﻿using Algorithms.Permutation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
