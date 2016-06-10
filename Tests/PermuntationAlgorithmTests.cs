@@ -139,7 +139,7 @@ namespace Tests
 
         private string RunTest(string characters)
         {
-            Algorithm a = new Algorithm(characters, false);
+            AlgorithmHG a = new AlgorithmHG(characters, false);
             string result = a.RunReturnValue();
 
             return result;

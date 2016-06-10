@@ -41,9 +41,11 @@
   <ItemGroup>
     <Compile Include="Genetic\Algorithm.cs" />
     <Compile Include="Main.cs" />
-    <Compile Include="Permutation\HomeGrown\Algorithm.cs" />
+    <Compile Include="Permutation\AlexanderBogomolyn\AlgorithmAB.cs" />
+    <Compile Include="Permutation\Algorithm.cs" />
+    <Compile Include="Permutation\HomeGrown\AlgorithmHG.cs" />
     <Compile Include="Permutation\ComparisonTests.cs" />
-    <Compile Include="Permutation\UnivExeter\Algorithm.cs" />
+    <Compile Include="Permutation\UnivExeter\AlgorithmUE.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Permutation\HomeGrown\ValuesList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -52,6 +54,7 @@
     <Compile Include="TravelingSalesman\CityDistance.cs" />
     <Compile Include="TravelingSalesman\Enumerations.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

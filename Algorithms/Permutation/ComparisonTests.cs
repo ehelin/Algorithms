@@ -21,7 +21,7 @@ namespace Algorithms.Permutation
         private void RunHomeGrownTest(string characters)
         {
             Console.WriteLine("Home Grown Test Input: " + characters + " - " + DateTime.Now.ToString());
-            Algorithms.Permutation.HomeGrown.Algorithm a = new Algorithms.Permutation.HomeGrown.Algorithm(characters, true);
+            Algorithms.Permutation.HomeGrown.AlgorithmHG a = new Algorithms.Permutation.HomeGrown.AlgorithmHG(characters, true);
             long count = a.RunPrintPermutationCount();
 
             Console.WriteLine("Permutation count - " + count.ToString());
@@ -31,7 +31,7 @@ namespace Algorithms.Permutation
         private void RunUnversiteOfExeterTest(string characters)
         {
             //Console.WriteLine("University Of Exeter Test Input: " + characters + " - " + DateTime.Now.ToString());
-            Algorithms.Permutation.UnivExeter.Algorithm a = new Algorithms.Permutation.UnivExeter.Algorithm(characters, false);
+            Algorithms.Permutation.UnivExeter.AlgorithmUE a = new Algorithms.Permutation.UnivExeter.AlgorithmUE(characters, false);
             a.Run();
         }
     }

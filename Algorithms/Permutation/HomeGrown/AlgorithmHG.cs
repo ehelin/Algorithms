@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Algorithms.Permutation;
 
 namespace Algorithms.Permutation.HomeGrown
 {
@@ -15,7 +16,7 @@ namespace Algorithms.Permutation.HomeGrown
     /// 
     /// <insert more detail>
     /// </summary>
-    public class Algorithm
+    public class AlgorithmHG : Algorithm
     {
         /// <summary>
         /// List of values to be processed
@@ -28,17 +29,19 @@ namespace Algorithms.Permutation.HomeGrown
         private List<string> permutations;
 
         private long endCnt = 0;
-        private bool showDisplay = false;
+        //private bool showDisplay = false;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="input"></param>
         /// <param name="showDisplay"></param>
-        public Algorithm(string input, bool showDisplay)
+        public AlgorithmHG(string Input, bool ShowOutput)
         {
-            this.valuesList = new ValuesList(input);
-            this.showDisplay = showDisplay;
+            this.Input = Input;
+            this.ShowOutput = ShowOutput;
+
+            this.valuesList = new ValuesList(this.Input);
             this.permutations = new List<string>();
         }
         
@@ -81,7 +84,7 @@ namespace Algorithms.Permutation.HomeGrown
 
             while (valuesList.DisplayCtr < endCnt)
             {
-                valuesList.Display(showDisplay);
+                valuesList.Display(this.ShowOutput);
                 //this.permutations.Add(valuesList.GetLastDisplay());
 
                 valuesList.SetNextOperation();

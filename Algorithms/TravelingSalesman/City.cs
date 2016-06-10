@@ -201,7 +201,7 @@ namespace Algorithms.TravelingSalesman
         public void AddOtherCitysAndPermutationsDistances(List<City> cities)
         {
             AddOtherCities(cities);
-            Permutation.HomeGrown.Algorithm a = new Permutation.HomeGrown.Algorithm(this.cityIds, false);
+            Permutation.HomeGrown.AlgorithmHG a = new Permutation.HomeGrown.AlgorithmHG(this.cityIds, false);
             //this.cityPermutations = a.RunReturnAllPermutations();
             
             foreach (City otherCity in otherCities)

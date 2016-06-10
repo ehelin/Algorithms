@@ -7,11 +7,20 @@ namespace Algorithms
     {
         public void Run()
         {
-            RunComparisonTests();
+            //RunComparisonTests();
             //RunUniversityExeterPermutation();
+            RunAlexanderBogomolynPermutation();
             //RunPermutation("4,2,3,1");
             //RunTravelingSalesman();
             //RunGeneticAlgorithm();
+
+            Console.Read();
+        }
+
+        private void RunAlexanderBogomolynPermutation()
+        {
+            Permutation.UnivExeter.AlgorithmAB a = new Permutation.UnivExeter.AlgorithmAB("0,0,0,0", true);
+            a.Run();
 
             Console.Read();
         }
@@ -26,7 +35,7 @@ namespace Algorithms
 
         private void RunUniversityExeterPermutation()
         {
-            Permutation.UnivExeter.Algorithm a = new Permutation.UnivExeter.Algorithm("1,2,3,4,5,6,7,8,9,10", true);
+            Permutation.UnivExeter.AlgorithmUE a = new Permutation.UnivExeter.AlgorithmUE("1,2,3,5", true);
             a.Run();
 
             Console.Read();
@@ -36,7 +45,7 @@ namespace Algorithms
         {
             Console.WriteLine("Starting permutation for " + characters + " - " + DateTime.Now.ToString());
 
-            Permutation.HomeGrown.Algorithm a = new Permutation.HomeGrown.Algorithm(characters, true);
+            Permutation.HomeGrown.AlgorithmHG a = new Permutation.HomeGrown.AlgorithmHG(characters, true);
             List<string> permutations = a.RunReturnAllPermutations();
 
             Console.WriteLine("Done with permutation for " + characters + " - " + DateTime.Now.ToString());
