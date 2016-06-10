@@ -4,13 +4,13 @@ using Algorithms.Permutation;
 namespace Algorithms.Permutation.UnivExeter
 {
     /// <summary>
-    /// C# implementation of University of Exeter Permutation algorithm
+    /// C# implementation of Alexander Bogomolyn Permutation algorithm
     /// 
     /// http://www.bearcave.com/random_hacks/permute.html
     /// </summary>
-    public class AlgorithmUE : Algorithm
+    public class AlgorithmAB : Algorithm
     {
-        public AlgorithmUE(string Input, bool ShowOutput)
+        public AlgorithmAB(string Input, bool ShowOutput)
         {
             this.Input = Input;
             this.ShowOutput = ShowOutput;
@@ -21,17 +21,22 @@ namespace Algorithms.Permutation.UnivExeter
         {
             DateTime start = DateTime.Now;
 
-            Console.WriteLine("Starting University Of Exeter permutation for " + values.Length.ToString());
+            Console.WriteLine("Starting Alexander Bogomolyn permutation for " + values.Length.ToString());
             Console.WriteLine("Input sequence: " + this.Input);
 
             Permutate(values, 0);
 
             Console.WriteLine("Sequences That would have been printed - " + this.printCounts.ToString());
-            Console.WriteLine("University Of Exeter permutation is done! " + Utilities.GetElaspedTime(start, DateTime.Now));
+            Console.WriteLine("Alexander Bogomolyn permutation is done! " + Utilities.GetElaspedTime(start, DateTime.Now));
         }
+
+        private static int level = -1;
         private void Permutate(int[] intValues, int startIndex)
         {
-            if (startIndex == values.Length - 1)
+            level = level + 1;
+            intValues[startIndex] = level;
+
+            if (level == intValues.Length)
             {
                 if (this.ShowOutput)
                 {
@@ -42,19 +47,17 @@ namespace Algorithms.Permutation.UnivExeter
             }
             else
             {
-                for (int i = startIndex; i < values.Length; i++)
+                for (int ctr = 0; ctr < intValues.Length; ctr++)
                 {
-                    int tmp = intValues[i];
-                    intValues[i] = intValues[startIndex];
-                    intValues[startIndex] = tmp;
-
-                    int incrementedIndex = startIndex + 1;
-                    Permutate(intValues, incrementedIndex);
-
-                    intValues[startIndex] = intValues[i];
-                    intValues[i] = tmp;
+                    if (intValues[ctr] == 0)
+                    {
+                        Permutate(intValues, ctr);
+                    }
                 }
             }
+
+            level = level - 1;
+            intValues[startIndex] = 0;
         }
     }
 }

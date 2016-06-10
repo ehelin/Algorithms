@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Algorithms.Permutation
 {
@@ -6,32 +7,35 @@ namespace Algorithms.Permutation
     {
         public void RunComparisonTests()
         {
-            //RunHomeGrownTest("1,2");
-            //RunUnversiteOfExeterTest("1,2");
-
-
-            //RunHomeGrownTest("1,2,3,4,5,6,7,8,9,10,11");
-            RunUnversiteOfExeterTest("1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20");
-            
-            //RunHomeGrownTest("5,4,3,2,1");
-            //RunUnversiteOfExeterTest("5,4,3,2,1");
+            RunAlexanderBogomolynTest("0,0,0,0,0,0,0,0,0,0");
+            Console.WriteLine("");
+            RunUnversiteOfExeterTest("1,2,3,4,5,6,7,8,9,10");
+            Console.WriteLine("");
+            RunHomeGrownTest("1,2,3,4,5,6,7,8,9,10");
+            Console.WriteLine("");
         }
 
 
         private void RunHomeGrownTest(string characters)
         {
-            Console.WriteLine("Home Grown Test Input: " + characters + " - " + DateTime.Now.ToString());
-            Algorithms.Permutation.HomeGrown.AlgorithmHG a = new Algorithms.Permutation.HomeGrown.AlgorithmHG(characters, true);
+            DateTime start = DateTime.Now;
+            Console.WriteLine("Home Grown Test Input: " + characters);
+
+            Algorithms.Permutation.HomeGrown.AlgorithmHG a = new Algorithms.Permutation.HomeGrown.AlgorithmHG(characters, false);
             long count = a.RunPrintPermutationCount();
 
             Console.WriteLine("Permutation count - " + count.ToString());
-            Console.WriteLine("Test Done! " + DateTime.Now.ToString());
+            Console.WriteLine("Test Done! " + Utilities.GetElaspedTime(start, DateTime.Now));
         }
-
         private void RunUnversiteOfExeterTest(string characters)
         {
-            //Console.WriteLine("University Of Exeter Test Input: " + characters + " - " + DateTime.Now.ToString());
             Algorithms.Permutation.UnivExeter.AlgorithmUE a = new Algorithms.Permutation.UnivExeter.AlgorithmUE(characters, false);
+            a.Run();
+        }
+
+        private void RunAlexanderBogomolynTest(string characters)
+        {
+            Permutation.UnivExeter.AlgorithmAB a = new Permutation.UnivExeter.AlgorithmAB(characters, false);
             a.Run();
         }
     }

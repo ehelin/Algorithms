@@ -87,6 +87,18 @@ namespace Algorithms
 
         #region Permutation
 
+        public static string GetElaspedTime(DateTime start, DateTime end)
+        {
+            TimeSpan ts = end - start;
+            long interval = ts.Milliseconds;
+
+            string intervalStr = "Elasped Time: " + ts.Hours.ToString("00") + ":" 
+                                                    + ts.Minutes.ToString("00") + ":" 
+                                                    + ts.Seconds.ToString("00") + ":" 
+                                                    + ts.Milliseconds.ToString("000");
+            
+            return intervalStr;
+        }
         public static List<int> Sort(List<int> values)
         {
             //Starting with bubble sort for ease of use...replace with quick sort?

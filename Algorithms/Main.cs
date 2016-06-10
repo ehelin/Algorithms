@@ -7,20 +7,12 @@ namespace Algorithms
     {
         public void Run()
         {
-            //RunComparisonTests();
+            RunComparisonTests();
             //RunUniversityExeterPermutation();
-            RunAlexanderBogomolynPermutation();
+            //RunAlexanderBogomolynPermutation();
             //RunPermutation("4,2,3,1");
             //RunTravelingSalesman();
             //RunGeneticAlgorithm();
-
-            Console.Read();
-        }
-
-        private void RunAlexanderBogomolynPermutation()
-        {
-            Permutation.UnivExeter.AlgorithmAB a = new Permutation.UnivExeter.AlgorithmAB("0,0,0,0", true);
-            a.Run();
 
             Console.Read();
         }
@@ -36,6 +28,14 @@ namespace Algorithms
         private void RunUniversityExeterPermutation()
         {
             Permutation.UnivExeter.AlgorithmUE a = new Permutation.UnivExeter.AlgorithmUE("1,2,3,5", true);
+            a.Run();
+
+            Console.Read();
+        }
+
+        private void RunAlexanderBogomolynPermutation()
+        {
+            Permutation.UnivExeter.AlgorithmAB a = new Permutation.UnivExeter.AlgorithmAB("0,0,0,0", true);
             a.Run();
 
             Console.Read();
