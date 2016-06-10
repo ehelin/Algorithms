@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Algorithms.Permutation
+namespace Algorithms.Permutation.HomeGrown
 {
     public class ValuesList
     {
@@ -60,95 +60,41 @@ namespace Algorithms.Permutation
             Init(input);
         }
         
-        //TODO - refactor to handle more than just 10 characters
         public void SetNextOperation()
         {
+            //first swap of farthest right numbers in the sorted equence
             if (Utilities.ExecuteCommand(ValuesOperationList, 1))
             {
                 Operation = 1;
                 ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 1);
             }
-            
-            else if (Utilities.ExecuteCommand(ValuesOperationList, 2))
-            {
-                if (!Utilities.ProcessingDone(Values, 3, out doneProcessing))
-                {
-                    Operation = 2;
-                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 2);
-                }
-            }
-            
-            else if (Utilities.ExecuteCommand(ValuesOperationList, 3))
-            {
-                if (!Utilities.ProcessingDone(Values, 4, out doneProcessing))                
-                {
-                    Operation = 3;
-                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 3);
-                }
-            }
-            
-            else if (Utilities.ExecuteCommand(ValuesOperationList, 4))
-            {
-                if (!Utilities.ProcessingDone(Values, 5, out doneProcessing))
-                {
-                    Operation = 4;
-                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 4);
-                }
-            }
 
-            else if (Utilities.ExecuteCommand(ValuesOperationList, 5))
+            //working back towards the left side of the sorted sequence
+            else
             {
-                if (!Utilities.ProcessingDone(Values, 6, out doneProcessing))
-                {
-                    Operation = 5;
-                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 5);
-                }
-            }
+                bool done = false;
+                int incrementPosition = 2;
 
-            else if (Utilities.ExecuteCommand(ValuesOperationList, 6))
-            {
-                if (!Utilities.ProcessingDone(Values, 7, out doneProcessing))
+                while (!done)
                 {
-                    Operation = 6;
-                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 6);
-                }
-            }
+                    int compareValue = incrementPosition + 1;
+                    if (!Utilities.ProcessingDone(Values, compareValue, out doneProcessing))
+                    {
+                        if (Utilities.ExecuteCommand(ValuesOperationList, incrementPosition))
+                        {
+                            done = true;
+                            Operation = incrementPosition;
+                            ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, incrementPosition);
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
 
-            else if (Utilities.ExecuteCommand(ValuesOperationList, 7))
-            {
-                if (!Utilities.ProcessingDone(Values, 8, out doneProcessing))
-                {
-                    Operation = 7;
-                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 7);
+                    incrementPosition++;
                 }
-            }
-
-            else if (Utilities.ExecuteCommand(ValuesOperationList, 8))
-            {
-                if (!Utilities.ProcessingDone(Values, 9, out doneProcessing))
-                {
-                    Operation = 8;
-                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 8);
-                }
-            }
-
-            else if (Utilities.ExecuteCommand(ValuesOperationList, 9))
-            {
-                if (!Utilities.ProcessingDone(Values, 10, out doneProcessing))
-                {
-                    Operation = 9;
-                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 9);
-                }
-            }
-
-            else if (Utilities.ExecuteCommand(ValuesOperationList,  10))
-            {
-                if (!Utilities.ProcessingDone(Values, 11, out doneProcessing))
-                {
-                    Operation = 10;
-                    ValuesOperationList = Utilities.ResetOperationArray(ValuesOperationList, 10);
-                }
-            }
+            }            
         }
         public void Display(bool showDisplay, bool omitNumbering = false)
         {

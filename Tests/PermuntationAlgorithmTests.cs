@@ -1,4 +1,4 @@
-﻿using Algorithms.Permutation;
+﻿using Algorithms.Permutation.HomeGrown;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
@@ -121,6 +121,20 @@ namespace Tests
         {
             string result = RunTest("62532,7,1,1230,42,5,9,325,2,81231");
             Assert.AreEqual("81231-62532-1230-325-42-9-7-5-2-1", result);
+        }
+
+
+        [TestMethod]
+        public void aTest_Sequence_Ten_A()
+        {
+            string result = RunTest("6,7,1,10,11,4,5,9,3,2,8");
+            Assert.AreEqual("11-10-9-8-7-6-5-4-3-2-1", result);
+        }
+        [TestMethod]
+        public void aTest_Sequence_Eleven_A()
+        {
+            string result = RunTest("6,7,12,1,10,11,4,5,9,3,2,8");
+            Assert.AreEqual("12-11-10-9-8-7-6-5-4-3-2-1", result);
         }
 
         private string RunTest(string characters)

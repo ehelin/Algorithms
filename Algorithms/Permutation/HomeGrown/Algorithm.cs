@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Algorithms.Permutation
+namespace Algorithms.Permutation.HomeGrown
 {
     /// <summary>
     /// Algorithm that returns all possible permutations (without repeating values) for a supplied number of 
@@ -67,6 +67,12 @@ namespace Algorithms.Permutation
 
             return this.permutations;
         }
+        public long RunPrintPermutationCount()
+        {
+            RunPermutation();
+
+            return valuesList.DisplayCtr;
+        }
 
         private string RunPermutation()
         {
@@ -76,7 +82,7 @@ namespace Algorithms.Permutation
             while (valuesList.DisplayCtr < endCnt)
             {
                 valuesList.Display(showDisplay);
-                this.permutations.Add(valuesList.GetLastDisplay());
+                //this.permutations.Add(valuesList.GetLastDisplay());
 
                 valuesList.SetNextOperation();
                 valuesList = PerformListOperation(valuesList);
@@ -110,29 +116,30 @@ namespace Algorithms.Permutation
         }
         private List<int> IncrementPosition(List<int> values, int incrementPosition)
         {
-            List<int> values1 = new List<int>();
+            List<int> valuesTmp = new List<int>();
 
+            //create list of all items to right of increment position and sort
             int positionCtr = values.Count - incrementPosition;
             while (positionCtr < values.Count)
             {
-                values1.Add(values[positionCtr]);
+                valuesTmp.Add(values[positionCtr]);
                 positionCtr++;
             }
-            values1 = Utilities.Sort(values1);
+            valuesTmp = Utilities.Sort(valuesTmp);
 
+            //get value to increment, increase it to next biggest number and remove that from the list to sort, sort and add
             int valueToIncrement = values[values.Count - incrementPosition];
-            int incrementedValue = Utilities.GetNextBiggerNumber(values1, valueToIncrement);
-
-            values1.Remove(incrementedValue);
-            values1 = Utilities.Sort(values1);
-
+            int incrementedValue = Utilities.GetNextBiggerNumber(valuesTmp, valueToIncrement);
+            valuesTmp.Remove(incrementedValue);
+            valuesTmp = Utilities.Sort(valuesTmp);
             values[values.Count - incrementPosition] = incrementedValue;
-            positionCtr = (values.Count - incrementPosition) + 1;
 
+            //add sorted values to right of the increment value
+            positionCtr = (values.Count - incrementPosition) + 1;
             int sortCtr = 0;
             while (positionCtr < values.Count)
             {
-                values[positionCtr] = values1[sortCtr];
+                values[positionCtr] = valuesTmp[sortCtr];
                 positionCtr++;
                 sortCtr++;
             }
