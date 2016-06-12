@@ -11,7 +11,7 @@ namespace Algorithms.Permutation
         protected string Input;          //input to find all sequences for
         protected bool ShowOutput;       //show all sequences
         protected int[] values;          //split up array version of input
-        protected long printCounts = 0;    //number of sequence that would have been printed
+        protected double printCounts = 0;    //number of sequence that would have been printed
 
         protected void Init()
         {
@@ -27,14 +27,25 @@ namespace Algorithms.Permutation
         {
             string line = string.Empty;
 
-            foreach (int value in intValues)
+            if (this.ShowOutput)
             {
-                line += value.ToString() + ",";
+                foreach (int value in intValues)
+                {
+                    line += value.ToString() + ",";
+                }
+
+                line = line.Trim(',');
+            }
+            else if (printCounts % 1000000000 == 0)
+            {
+                line = printCounts.ToString();
             }
 
-            line = line.Trim(',');
-
-            Console.WriteLine(line);
+            if (!string.IsNullOrEmpty(line))
+            {
+                Console.WriteLine("Goal: 30414093201713378043612608166064768844377641568960512000000000000");
+                Console.WriteLine("Current: " + line);
+            }
         }
     }
 }

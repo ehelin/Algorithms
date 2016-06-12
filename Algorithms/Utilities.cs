@@ -92,10 +92,11 @@ namespace Algorithms
             TimeSpan ts = end - start;
             long interval = ts.Milliseconds;
 
-            string intervalStr = "Elasped Time: " + ts.Hours.ToString("00") + ":" 
-                                                    + ts.Minutes.ToString("00") + ":" 
-                                                    + ts.Seconds.ToString("00") + ":" 
-                                                    + ts.Milliseconds.ToString("000");
+            string intervalStr = "Elasped Time: " + ts.Days.ToString() + " days, " 
+                                                   + ts.Hours.ToString("00") + " hours, " 
+                                                    + ts.Minutes.ToString("00") + " minutes, " 
+                                                    + ts.Seconds.ToString("00") + " seconds, " 
+                                                    + ts.Milliseconds.ToString("000") + " milliseconds";
             
             return intervalStr;
         }
