@@ -12,9 +12,11 @@ namespace Algorithms.Permutation
         protected bool ShowOutput;       //show all sequences
         protected int[] values;          //split up array version of input
         protected double printCounts = 0;    //number of sequence that would have been printed
+        protected DateTime start;
 
         protected void Init()
         {
+            start = DateTime.Now;
             string[] strValues = Input.Split(',');
             values = new int[strValues.Length];
 
@@ -45,6 +47,7 @@ namespace Algorithms.Permutation
             {
                 Console.WriteLine("Goal: 30414093201713378043612608166064768844377641568960512000000000000");
                 Console.WriteLine("Current: " + line);
+                Console.WriteLine("(Start/Current - (" + this.start.ToString() + "/" + DateTime.Now.ToString() + ")");
             }
         }
     }
