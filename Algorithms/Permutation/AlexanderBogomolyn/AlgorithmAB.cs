@@ -38,11 +38,7 @@ namespace Algorithms.Permutation.UnivExeter
 
             if (level == intValues.Length)
             {
-                if (this.ShowOutput)
-                {
-                    Print(intValues);
-                }
-
+                Print(intValues);
                 printCounts++;
             }
             else

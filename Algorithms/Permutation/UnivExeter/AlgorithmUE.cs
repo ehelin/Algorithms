@@ -33,11 +33,7 @@ namespace Algorithms.Permutation.UnivExeter
         {
             if (startIndex == values.Length - 1)
             {
-                if (this.ShowOutput)
-                {
-                    Print(intValues);
-                }
-
+                Print(intValues);
                 printCounts++;
             }
             else
