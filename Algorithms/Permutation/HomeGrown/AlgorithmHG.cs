@@ -85,7 +85,7 @@ namespace Algorithms.Permutation.HomeGrown
             while (valuesList.DisplayCtr < endCnt)
             {
                 valuesList.Display(this.ShowOutput);
-                //this.permutations.Add(valuesList.GetLastDisplay());
+                this.permutations.Add(valuesList.GetLastDisplay());
 
                 valuesList.SetNextOperation();
                 valuesList = PerformListOperation(valuesList);

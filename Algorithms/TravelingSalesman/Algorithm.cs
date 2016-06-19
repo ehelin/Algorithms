@@ -9,35 +9,42 @@ namespace Algorithms.TravelingSalesman
         /// Two dimensional grid for the cities
         /// </summary>
         private int[,] grid = null;
+        private int row = 0;
+        private int col = 0;
 
         /// <summary>
         /// List of cities on the grid
         /// </summary>
         private List<City> cities = null;
 
-        public Algorithm(int row, int col, List<City> cities)
+        public Algorithm(int row, int col)
         {
-            this.cities = cities;
-
-            grid = Utilities.PopulateGrid(grid, row, col, cities);
+            this.row = row;
+            this.col = col;
         }
 
         public void RunExample()
         {
-            InitMessage();
+            int index = 0;
 
-            Run();
+            while (true)
+            {
+                Init();
+                InitMessage();
+                Run();
+                Utilities.DisplayGrid(grid, this.cities[index]);
 
-            Utilities.DisplayGrid(grid);
-            
+                Console.WriteLine("Press 1 through " + this.cities.Count + " to see that starting city or '-1' to end");
+                index = Convert.ToInt32(Console.ReadLine());
+
+                if (index < 0)
+                    break;
+                else
+                    index--;
+            }
+
             Console.WriteLine("Traveling Salesman Complete! " + DateTime.Now.ToString());
-        }
-        
-        private void Run()
-        {
-            FindBestRouteForEach();
-            DisplayLowestPathResults();
-        }
+        }        
 
         #region private methods
 
@@ -48,7 +55,17 @@ namespace Algorithms.TravelingSalesman
                 Console.WriteLine(city.Name + "(" + city.X.ToString() + "/" + city.Y.ToString() + ") - Lowest cost path is " + city.GetLowestPathCost());
             }
         }
+        private void Run()
+        {
+            FindBestRouteForEach();
+            DisplayLowestPathResults();
+        }
+        private void Init()
+        {
+            this.cities = Utilities.GetCities();
 
+            grid = Utilities.PopulateGrid(grid, row, col, cities);
+        }
         //TODO - replace this method with a Contains linq statement
         private City PopulateCity(int X, int Y)
         {

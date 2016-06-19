@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Algorithms.TravelingSalesman;
 using System;
+using System.Linq;
 
 namespace Algorithms
 {
@@ -8,21 +9,57 @@ namespace Algorithms
     {
         #region Travelin Salesman
 
-        public static void DisplayGrid(int[,] grid)
+        //TODO - replace with linq query
+        private static bool IsTravelPoint(City startingCity, int x, int y)
         {
-            //TODO - use showPath to show best route
+            bool isTravelPnt = false;
+
+            foreach (Point travelPoint in startingCity.TravelPoints)
+            {
+                if (travelPoint.X == x && travelPoint.Y == y)
+                {
+                    isTravelPnt = true;
+                    break;
+                }
+            }
+
+            return isTravelPnt;
+        }
+        public static void DisplayGrid(int[,] grid, City startingCity)
+        {
+            startingCity.CalculateTravelPoints();
+
             for (int rowCtr = 0; rowCtr < grid.GetLength(0); rowCtr++)
             {
                 for (int colCtr = 0; colCtr < grid.GetLength(1); colCtr++)
                 {
-                    if (grid[colCtr, rowCtr] == 1)
-                        Console.Write(grid[colCtr, rowCtr].ToString() + "-");
+                    bool travelPoint = IsTravelPoint(startingCity, colCtr, rowCtr);
+
+                    int cell = grid[colCtr, rowCtr];
+                    if (cell > 0)
+                    {
+                        if (startingCity.NumberId == cell)
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                        else
+                            Console.ForegroundColor = ConsoleColor.Red;
+
+                        Console.Write(grid[colCtr, rowCtr].ToString());
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write("-");
+                    }
                     else
+                    {
+                        if (travelPoint)
+                            Console.ForegroundColor = ConsoleColor.Green;
+                        else
+                            Console.ForegroundColor = ConsoleColor.White;
+
                         Console.Write("0-");
+                    }
                 }
 
                 Console.WriteLine("");
-            }
+            }            
         }
         public static List<City> GetCities()
         {
@@ -37,7 +74,7 @@ namespace Algorithms
             city.Add(new City("City7", 19, 18, 7));
             city.Add(new City("City8", 8, 4, 8));
             city.Add(new City("City9", 9, 2, 9));
-            city.Add(new City("City10", 10, 10, 10));
+            //city.Add(new City("City10", 10, 10, 10));
 
             return city;
         }
@@ -71,7 +108,7 @@ namespace Algorithms
 
                     if (city != null)
                     {
-                        grid[rowCtr, colCtr] = 1;
+                        grid[rowCtr, colCtr] = city.NumberId;
                     }
                     else
                     {

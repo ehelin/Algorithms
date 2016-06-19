@@ -49,6 +49,9 @@
     <Compile Include="Permutation\HomeGrown\AlgorithmHG.cs" />
     <Compile Include="Permutation\ComparisonTests.cs" />
     <Compile Include="Permutation\UnivExeter\AlgorithmUE.cs" />
+    <Compile Include="SpeechRecognition\Algorithm.cs" />
+    <Compile Include="TravelingSalesman\Point.cs" />
+    <Compile Include="TravelingSalesman\TravelStep.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Permutation\HomeGrown\ValuesList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
