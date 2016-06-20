@@ -6,7 +6,7 @@ namespace Algorithms.TravelingSalesman
     public class Algorithm
     {
         /// <summary>
-        /// Two dimensional grid for the cities
+        /// Two dimensional grid for the cities with row/column counts
         /// </summary>
         private int[,] grid = null;
         private int row = 0;
@@ -17,6 +17,11 @@ namespace Algorithms.TravelingSalesman
         /// </summary>
         private List<City> cities = null;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
         public Algorithm(int row, int col)
         {
             this.row = row;
@@ -25,14 +30,38 @@ namespace Algorithms.TravelingSalesman
 
         public void RunExample()
         {
-            int index = 0;
+            Console.WriteLine("Starting Traveling Salesman - " + DateTime.Now.ToString());
+
+            Run();
+
+            Console.WriteLine("Traveling Salesman Complete! " + DateTime.Now.ToString());
+        }
+
+        #region private methods
+
+        private void Run()
+        {
+            int index = 1;
 
             while (true)
             {
                 Init();
-                InitMessage();
-                Run();
-                Utilities.DisplayGrid(grid, this.cities[index]);
+
+                Console.WriteLine("There are " + cities.Count + " cities in a " + grid.GetLength(0).ToString() + " by " + grid.GetLength(1).ToString() + " grid");
+
+                FindBestRouteForEach();
+                DisplayLowestPathResults();
+
+                Utilities.DisplayGrid(grid, this.cities[index], index);
+
+                //City startCity = this.cities[index];
+                //int maxPathCount = startCity.GetUniquePathCount();
+                //while (index < maxPathCount)
+                //{
+                //    Utilities.DisplayGrid(grid, this.cities[index], index);
+                //    index++;
+                //    Console.Read();
+                //}
 
                 Console.WriteLine("Press 1 through " + this.cities.Count + " to see that starting city or '-1' to end");
                 index = Convert.ToInt32(Console.ReadLine());
@@ -42,47 +71,14 @@ namespace Algorithms.TravelingSalesman
                 else
                     index--;
             }
-
-            Console.WriteLine("Traveling Salesman Complete! " + DateTime.Now.ToString());
-        }        
-
-        #region private methods
-
-        private void DisplayLowestPathResults()
-        {
-            foreach (City city in cities)
-            {
-                Console.WriteLine(city.Name + "(" + city.X.ToString() + "/" + city.Y.ToString() + ") - Lowest cost path is " + city.GetLowestPathCost());
-            }
         }
-        private void Run()
-        {
-            FindBestRouteForEach();
-            DisplayLowestPathResults();
-        }
+
+        //TODO - comment rest of methods
         private void Init()
         {
             this.cities = Utilities.GetCities();
-
             grid = Utilities.PopulateGrid(grid, row, col, cities);
-        }
-        //TODO - replace this method with a Contains linq statement
-        private City PopulateCity(int X, int Y)
-        {
-            City matchCity = null;
-
-            foreach (City city in cities)
-            {
-                if (city.X == X && city.Y == Y && !city.AddedToGrid)
-                {
-                    matchCity = city;
-                    matchCity.AddedToGrid = true;
-                    break;
-                }
-            }
-
-            return matchCity;
-        }
+        }      
         private void PopulateGrid(int row, int col)
         {
             grid = new int[row, col];
@@ -91,7 +87,7 @@ namespace Algorithms.TravelingSalesman
             {
                 for (int colCtr = 0; colCtr < col; colCtr++)
                 {
-                    City city = PopulateCity(rowCtr, colCtr);
+                    City city = Utilities.PopulateCity(rowCtr, colCtr, cities);
 
                     if (city != null)
                     {
@@ -109,7 +105,7 @@ namespace Algorithms.TravelingSalesman
             Console.WriteLine("Creating each city with list of cities, permutations and distances...");
             foreach (City city in cities)
             {
-                city.AddOtherCitysAndPermutationsDistances(cities);
+                city.AddOtherCitiesPermutations(cities);
             }
             Console.WriteLine("Done with city preliminary calculations!");
 
@@ -120,10 +116,12 @@ namespace Algorithms.TravelingSalesman
             }
             Console.WriteLine("Done with city lowest cost path calculations!");
         }
-        private void InitMessage()
+        private void DisplayLowestPathResults()
         {
-            Console.WriteLine("Starting Traveling Salesman - " + DateTime.Now.ToString());
-            Console.WriteLine("There are " + cities.Count + " cities in a " + grid.GetLength(0).ToString() + " by " + grid.GetLength(1).ToString() + " grid");
+            foreach (City city in cities)
+            {
+                Console.WriteLine(city.Name + "(" + city.X.ToString() + "/" + city.Y.ToString() + ") - Lowest cost path is " + city.GetLowestPathCost());
+            }
         }
 
         #endregion

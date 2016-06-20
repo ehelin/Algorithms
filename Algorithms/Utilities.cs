@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Algorithms.TravelingSalesman;
 using System;
-using System.Linq;
+using Algorithms.TravelingSalesman.Dto;
 
 namespace Algorithms
 {
@@ -25,15 +25,63 @@ namespace Algorithms
 
             return isTravelPnt;
         }
-        public static void DisplayGrid(int[,] grid, City startingCity)
+        //public static void DisplayGrid(int[,] grid, City startingCity)
+        //{
+        //    for (int rowCtr = 0; rowCtr < grid.GetLength(0); rowCtr++)
+        //    {
+        //        for (int colCtr = 0; colCtr < grid.GetLength(1); colCtr++)
+        //        {
+        //            Console.ForegroundColor = ConsoleColor.White;
+
+        //            int cell = grid[colCtr, rowCtr];
+        //            if (cell > 0)
+        //            {
+        //                if (startingCity.NumberId == cell)
+        //                    Console.ForegroundColor = ConsoleColor.Yellow;
+        //                else
+        //                    Console.ForegroundColor = ConsoleColor.Red;
+
+        //                Console.Write(grid[colCtr, rowCtr].ToString());
+        //                Console.ForegroundColor = ConsoleColor.White;
+        //                Console.Write("-");
+        //            }
+        //            else
+        //            {
+        //                Console.Write("0-");
+        //            }
+        //        }
+
+        //        Console.WriteLine("");
+        //    }            
+        //}
+        public static void DisplayGrid(int[,] grid, City startingCity, int pathCountToDisplay)
         {
-            startingCity.CalculateTravelPoints();
+            int curPathCount = 0;
+            string curPointName = string.Empty;
 
             for (int rowCtr = 0; rowCtr < grid.GetLength(0); rowCtr++)
             {
                 for (int colCtr = 0; colCtr < grid.GetLength(1); colCtr++)
                 {
-                    bool travelPoint = IsTravelPoint(startingCity, colCtr, rowCtr);
+                    Console.ForegroundColor = ConsoleColor.White;
+
+                    //------------------------------------------------------
+                    bool isTravelPoint = IsTravelPoint(startingCity, colCtr, rowCtr);
+                    //bool isTravelPoint = false;
+                    //foreach (Point travelPoint in startingCity.TravelPoints)
+                    //{
+                    //    if (travelPoint.Name != curPointName && curPathCount <= pathCountToDisplay)
+                    //    {
+                    //        curPointName = travelPoint.Name;
+                    //        curPathCount++;
+                    //    }
+                    //    if (travelPoint.X == colCtr && travelPoint.Y == rowCtr)
+                    //    {
+                    //        isTravelPoint = true;
+                    //        break;
+                    //    }
+                    //}
+                    //------------------------------------------------------
 
                     int cell = grid[colCtr, rowCtr];
                     if (cell > 0)
@@ -49,7 +97,7 @@ namespace Algorithms
                     }
                     else
                     {
-                        if (travelPoint)
+                        if (isTravelPoint)
                             Console.ForegroundColor = ConsoleColor.Green;
                         else
                             Console.ForegroundColor = ConsoleColor.White;
@@ -59,8 +107,10 @@ namespace Algorithms
                 }
 
                 Console.WriteLine("");
-            }            
+            }
         }
+
+
         public static List<City> GetCities()
         {
             List<City> city = new List<City>();
@@ -72,8 +122,8 @@ namespace Algorithms
             city.Add(new City("City5", 19, 10, 5));
             city.Add(new City("City6", 15, 4, 6));
             city.Add(new City("City7", 19, 18, 7));
-            city.Add(new City("City8", 8, 4, 8));
-            city.Add(new City("City9", 9, 2, 9));
+            //city.Add(new City("City8", 8, 4, 8));
+            //city.Add(new City("City9", 9, 2, 9));
             //city.Add(new City("City10", 10, 10, 10));
 
             return city;

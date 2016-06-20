@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Algorithms.TravelingSalesman.Dto;
 using System.Collections.Generic;
 
 namespace Algorithms.TravelingSalesman
@@ -29,7 +29,7 @@ namespace Algorithms.TravelingSalesman
         /// <summary>
         /// List of cities and their distance from this distance
         /// </summary>
-        public Dictionary<City, CityDistance> cityDistances;
+        public Dictionary<City, CityDistance> StepsToOtherCities;
 
         /// <summary>
         /// points to display on grid
@@ -56,7 +56,7 @@ namespace Algorithms.TravelingSalesman
         /// </summary>
         private string lowestCostPermutation = string.Empty;
         private int lowestDistance = 0;
-        Dictionary<string, TravelStep> lowestPathCity = null;
+        Dictionary<string, CityDistance> lowestPathCity = null;
 
         /// <summary>
         /// Constructor
@@ -71,53 +71,22 @@ namespace Algorithms.TravelingSalesman
             this.X = X;
             this.Y = Y;
             this.NumberId = numberId;
-            cityDistances = new Dictionary<City, CityDistance>();
+            StepsToOtherCities = new Dictionary<City, CityDistance>();
             otherCities = new List<City>();
             cityPermutations = new List<string>();
             TravelPoints = new List<Point>();
         }
-        
-        public void CalculateTravelPoints()
-        {
-            int runningX = this.X;
-            int runningY = this.Y;
-            int ctr = 0;
-            City startCity = null;
 
-            foreach (var distances in this.lowestPathCity)
-            {
-                if (ctr == 0)
-                    startCity = this;
-                else
-                    startCity = GetCity(GetKey(ctr, this.lowestPathCity));
-
-                City nextCity = GetCity(GetKey(ctr + 1, this.lowestPathCity));
-
-                //hack!
-                if (nextCity == null)
-                    break;
-
-                TravelStep dirNextCity = distances.Value;
-
-                AddTravelingPoint(startCity, nextCity, dirNextCity);
-                startCity = nextCity;
-
-                ctr++;
-            }
-
-            //add travel points back to the original city
-            TravelStep stepsToThis = startCity.GetDistance(this);
-            AddTravelingPoint(startCity, this, stepsToThis);
-        }
+        //TODO - comment these public methods
         public City Clone()
         {
             City newCity = new City(this.Name, this.X, this.Y, this.NumberId);
             newCity.AddedToGrid = this.AddedToGrid;
 
-            foreach (var cityDistance in cityDistances)
-            {
-                newCity.cityDistances.Add(cityDistance.Key, cityDistance.Value);
-            }
+            //foreach (var steps in StepsToOtherCities)
+            //{
+            //    newCity.StepsToOtherCities.Add(steps.Key, steps.Value);
+            //}
 
             return newCity;
         }
@@ -133,60 +102,36 @@ namespace Algorithms.TravelingSalesman
 
             return lowestCostPath;
         }
-        public TravelStep GetDistance(City destinationCity)
-        {
-            TravelStep steps = null;
-
-            foreach (KeyValuePair<City, CityDistance> cityDistance in cityDistances)
-            {
-                if (cityDistance.Key.Name.Equals(destinationCity.Name))
-                {
-                    steps = new TravelStep(cityDistance.Value.TravelDirections.Count, 
-                                           destinationCity.Name, 
-                                           cityDistance.Value.XDiff, 
-                                           cityDistance.Value.YDiff);
-                    steps.Steps = cityDistance.Value.TravelDirections;
-                    break;
-                }
-            }
-
-            return steps;
-        }
-
-        #region Calculate Best Path
-
-        //Calculate the least cost path to visit all other cities fromt this city
         public void CalculateBestPath()
         {
-            Dictionary<string, Dictionary<string, TravelStep>>  startingCityTotalDistances = new Dictionary<string, Dictionary<string, TravelStep>>();
-            
-            //for each city list, get the travel cost list and store
+            Dictionary<string, Dictionary<string, CityDistance>>  startingCityTotalDistances = new Dictionary<string, Dictionary<string, CityDistance>>();
+
+            //for each city list, get the travel cost list and store lowest cost path details
             foreach (string cityPermutation in this.cityPermutations)
             {
                 Dictionary<City, bool> cityBools = GetCityList(cityPermutation);
                 City lastCity = null;
 
                 //put this city as start city to the first one in the permutation
-                Dictionary<string, TravelStep> individualCityDistances = new Dictionary<string, TravelStep>();
+                Dictionary<string, CityDistance> individualCityDistances = new Dictionary<string, CityDistance>();
                 List<string> curStartCityDistanceCities = new List<string>();
-                City startCity = this.Clone();
+                City startCity = Clone();
 
                 //link each city together in the permutation
                 foreach (KeyValuePair<City, bool> cityBool in cityBools)
                 {
                     City curStartCity = (City) cityBool.Key;
                     lastCity = curStartCity.Clone();
-
-                    TravelStep steps = startCity.GetDistance(curStartCity);
-
-                    individualCityDistances.Add(startCity.Name, steps);
+                    
+                    CityDistance cityDistance = startCity.CalculateDistance(startCity.Y - curStartCity.Y, startCity.X - curStartCity.X, startCity, curStartCity, this);
+                    individualCityDistances.Add(startCity.Name, cityDistance);
 
                     startCity = curStartCity.Clone();
                 }
 
                 //link last city in permutation to this city
                 City endCity = this.Clone();
-                individualCityDistances.Add(startCity.Name, startCity.GetDistance(this));
+                individualCityDistances.Add(startCity.Name, startCity.CalculateDistance(startCity.Y - this.Y, startCity.X - this.X, startCity, this, this));
 
                 //store
                 startingCityTotalDistances.Add(cityPermutation, individualCityDistances);
@@ -195,8 +140,25 @@ namespace Algorithms.TravelingSalesman
             //find lowest route
             TotalIndividualCityDistancesSetBest(startingCityTotalDistances);
         }
-        
-        private void TotalIndividualCityDistancesSetBest(Dictionary<string, Dictionary<string, TravelStep>> startingCityTotalDistances)
+        public int GetUniquePathCount()
+        {
+            string curName = string.Empty;
+            int uniquePathCount = 0;
+
+            foreach (Point point in TravelPoints)
+            {
+                if (point.Name != curName)
+                {
+                    curName = point.Name;
+                    uniquePathCount++;
+                }
+            }
+
+            return uniquePathCount;
+        }
+
+        //TODO - comment these private methods when done refactoring
+        private void TotalIndividualCityDistancesSetBest(Dictionary<string, Dictionary<string, CityDistance>> startingCityTotalDistances)
         {
             foreach (var startingCityTotalDistance in startingCityTotalDistances)
             {
@@ -214,7 +176,15 @@ namespace Algorithms.TravelingSalesman
                 }
             }
 
+            //store and capture this paths travel points
             lowestPathCity = startingCityTotalDistances[lowestCostPermutation];
+            foreach (KeyValuePair<string, CityDistance> lowestPath in lowestPathCity)
+            {
+                foreach (Point point in lowestPath.Value.TravelPoints)
+                {
+                    this.TravelPoints.Add(point);
+                }
+            }
         }
         private Dictionary<City, bool> GetCityList(string cityPermutation)
         {
@@ -235,12 +205,12 @@ namespace Algorithms.TravelingSalesman
 
             return cities;
         }
-        private string GetKey(int index, Dictionary<string, TravelStep> values)
+        private string GetKey(int index, Dictionary<string, CityDistance> values)
         {
             string key = string.Empty;
             int ctr = 0;
 
-            foreach (KeyValuePair<string, TravelStep> value in values)
+            foreach (KeyValuePair<string, CityDistance> value in values)
             {
                 if (ctr == index)
                 {
@@ -252,65 +222,6 @@ namespace Algorithms.TravelingSalesman
             }
 
             return key;
-        }
-        private void AddTravelingPoint(City cityOne, City cityTwo, TravelStep travelSteps)
-        {
-            int xRunning = cityOne.X;
-            int yRunning = cityOne.Y;
-
-            foreach (string travelStep in travelSteps.Steps)
-            {
-                //W
-                if (travelStep == Enumerations.Direction.W.ToString())
-                {
-                    xRunning--;
-                }
-                //E
-                else if (travelStep == Enumerations.Direction.E.ToString())
-                {
-                    xRunning++;
-                }
-                //N
-                else if (travelStep == Enumerations.Direction.N.ToString())
-                {
-                    yRunning--;
-                }
-                //S
-                else if (travelStep == Enumerations.Direction.S.ToString())
-                {
-                    yRunning++;
-                }
-                //NE
-                else if (travelStep == Enumerations.Direction.NE.ToString())
-                {
-                    xRunning--;
-                    yRunning--;
-                }
-                //NW
-                else if (travelStep == Enumerations.Direction.NW.ToString())
-                {
-                    xRunning++;
-                    yRunning--;
-                }
-                //SE
-                else if (travelStep == Enumerations.Direction.SE.ToString())
-                {
-                    xRunning--;
-                    yRunning++;
-                }
-                //SW
-                else if (travelStep == Enumerations.Direction.SW.ToString())
-                {
-                    xRunning++;
-                    yRunning++;
-                }
-                else
-                {
-                    throw new System.Exception("Unknown direction");
-                }
-
-                this.TravelPoints.Add(new Point(xRunning, yRunning));
-            }
         }
         private City GetCity(string cityName)
         {
@@ -327,123 +238,119 @@ namespace Algorithms.TravelingSalesman
 
             return city;
         }
-
-        #endregion
-
-        #region Add other cities/get permutations
-
-        /// <summary>
-        /// Adds all of the 'other' cities a person could travel to from here, the distance and other bits of information
-        /// </summary>
-        /// <param name="cities"></param>
-        public void AddOtherCitysAndPermutationsDistances(List<City> cities)
+        public void AddOtherCitiesPermutations(List<City> cities)
         {
             AddOtherCities(cities);
             Permutation.HomeGrown.AlgorithmHG a = new Permutation.HomeGrown.AlgorithmHG(this.cityIds, false);
             this.cityPermutations = a.RunReturnAllPermutations();
-            
-            foreach (City otherCity in otherCities)
+        }
+        private bool IsCityPoint(int x, int y)
+        {
+            bool cityPoint = false;
+
+            if (this.X == x && this.Y == y)
+                cityPoint = true;
+            else
             {
-                CityDistance distance = DetermineDirection(otherCity);
-                this.cityDistances.Add(otherCity, distance);
+                foreach (City city in otherCities)
+                {
+                    if (city.X == x && city.Y == y && !cityPoint)
+                    {
+                        cityPoint = true;
+                        break;
+                    }
+                }
             }
+
+            return cityPoint;
         }
-
-        /// <summary>
-        /// Gets distance from 'this' city to the specified city
-        /// </summary>
-        /// <param name="otherCity"></param>
-        /// <returns></returns>
-        private CityDistance DetermineDirection(City otherCity)
+        private CityDistance CalculateDistance(int yDiff, int xDiff, City startCity, City destinationCity, City beginningCity)
         {
-            CityDistance distance = new CityDistance(this.X - otherCity.X, this.Y - otherCity.Y);
+            CityDistance cityDistance = new CityDistance();
+            cityDistance.CityName = destinationCity.Name;
 
-            distance = GetSteps(distance, otherCity);
-
-            return distance;
-        }
-
-        /// <summary>
-        /// Return the 'steps' (i.e. NW, SW, etc.) in a 2 dimensional space from one city to another
-        /// </summary>
-        /// <param name="distance"></param>
-        /// <param name="otherCity"></param>
-        /// <returns></returns>
-        private CityDistance GetSteps(CityDistance distance, City otherCity)
-        {
+            //x,y comparison values to this city and the other city running count
             int xDiffCompare = 0;
             int yDiffCompare = 0;
 
+            //list each 2 d movement point for grid display
+            int xRunning = this.X;
+            int yRunning = this.Y;
+
+            throw new System.Exception("Find way to not let a movement point go through a city");
+            
             while (true)
             {
-                if (yDiffCompare == distance.YDiff && xDiffCompare == distance.XDiff)
+                if (yDiffCompare == yDiff && xDiffCompare == xDiff)
                     break;
 
                 //W
-                if (distance.XDiff > 0 && (distance.YDiff == yDiffCompare))
+                if (xDiff > 0 && (yDiff == yDiffCompare))
                 {
-                    distance.TravelDirections.Add(Enumerations.Direction.W.ToString());
                     xDiffCompare++;
+                    xRunning--;
                 }
                 //E
-                else if (distance.XDiff < 0 && (distance.YDiff == yDiffCompare))
+                else if (xDiff < 0 && (yDiff == yDiffCompare))
                 {
-                    distance.TravelDirections.Add(Enumerations.Direction.E.ToString());
                     xDiffCompare--;
+                    xRunning++;
                 }
                 //N
-                else if (distance.YDiff > 0 && (distance.XDiff == xDiffCompare))
+                else if (yDiff > 0 && (xDiff == xDiffCompare))
                 {
-                    distance.TravelDirections.Add(Enumerations.Direction.N.ToString());
                     yDiffCompare++;
+                    yRunning--;
                 }
                 //S
-                else if (distance.YDiff < 0 && (distance.XDiff == xDiffCompare))
+                else if (yDiff < 0 && (xDiff == xDiffCompare))
                 {
-                    distance.TravelDirections.Add(Enumerations.Direction.S.ToString());
                     yDiffCompare--;
+                    yRunning++;
                 }
                 //NE
-                else if (distance.XDiff > 0 && distance.YDiff > 0)
+                else if (xDiff > 0 && yDiff > 0)
                 {
-                    distance.TravelDirections.Add(Enumerations.Direction.NE.ToString());
                     xDiffCompare++;
                     yDiffCompare++;
+                    xRunning--;
+                    yRunning--;
                 }
                 //NW
-                else if (distance.XDiff < 0 && distance.YDiff > 0)
+                else if (xDiff < 0 && yDiff > 0)
                 {
-                    distance.TravelDirections.Add(Enumerations.Direction.NW.ToString());
                     xDiffCompare--;
                     yDiffCompare++;
+                    xRunning++;
+                    yRunning--;
                 }
                 //SE
-                else if (distance.XDiff > 0 && distance.YDiff < 0)
+                else if (xDiff > 0 && yDiff < 0)
                 {
-                    distance.TravelDirections.Add(Enumerations.Direction.SE.ToString());
                     xDiffCompare++;
                     yDiffCompare--;
+                    xRunning--;
+                    yRunning++;
                 }
                 //SW
-                else if (distance.XDiff < 0 && distance.YDiff < 0)
+                else if (xDiff < 0 && yDiff < 0)
                 {
-                    distance.TravelDirections.Add(Enumerations.Direction.SW.ToString());
                     xDiffCompare--;
                     yDiffCompare--;
+                    xRunning++;
+                    yRunning++;
                 }
                 else
                 {
                     throw new System.Exception("Unknown direction");
                 }
+
+                cityDistance.Distance++;
+                cityDistance.TravelPoints.Add(new Point(xRunning, yRunning, startCity.Name + "-" + destinationCity.Name));
             }
 
-            return distance;
+            return cityDistance;
         }
-
-        /// <summary>
-        /// Adds all other cities a person could travel to from here
-        /// </summary>
-        /// <param name="cities"></param>
         private void AddOtherCities(List<City> cities)
         {
             foreach (City city in cities)
@@ -457,7 +364,5 @@ namespace Algorithms.TravelingSalesman
 
             this.cityIds = this.cityIds.Trim(',');
         }
-
-        #endregion
     }
 }
