@@ -9,10 +9,10 @@ namespace Algorithms
         {
             //RunSpeechRecognition();
             //RunComparisonTests();
-            //RunUniversityExeterPermutation();
+            RunUniversityExeterPermutation();
             //RunAlexanderBogomolynPermutation();
-            //RunPermutation("4,2,3,1");
-            RunTravelingSalesman();
+            //RunPermutation("6,4,2,3,8,1,5,7");
+            //RunTravelingSalesman();
             //RunGeneticAlgorithm();
 
             Console.Read();
@@ -34,7 +34,7 @@ namespace Algorithms
         }
         private void RunUniversityExeterPermutation()
         {
-            Permutation.UnivExeter.AlgorithmUE a = new Permutation.UnivExeter.AlgorithmUE("1,2,3,5", true);
+            Permutation.UnivExeter.AlgorithmUE a = new Permutation.UnivExeter.AlgorithmUE("1,2,3,4", true);
             a.Run();
 
             Console.Read();

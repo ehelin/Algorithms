@@ -117,8 +117,8 @@ namespace Algorithms.Permutation.HomeGrown
 
                 if (showDisplay)
                 {
-                    Console.Write(line);
-                    Console.Write("\n");
+                    Console.WriteLine(line);
+                    Console.WriteLine("\n");
                 }
 
                 lastDisplay = line;
